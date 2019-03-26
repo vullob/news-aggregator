@@ -11,9 +11,10 @@ defmodule News.Application do
       # Start the Ecto repository
       News.Repo,
       # Start the endpoint when the application starts
-      NewsWeb.Endpoint
+      NewsWeb.Endpoint,
       # Starts a worker by calling: News.Worker.start_link(arg)
       # {News.Worker, arg},
+      News.NewsServer
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
