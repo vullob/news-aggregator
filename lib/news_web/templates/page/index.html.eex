@@ -1,0 +1,7 @@
+<div id="root">
+  <div class="row">
+    <div class="col-12">
+      <p>React Component Loading</p>
+    </div>
+  </div>
+</div>
