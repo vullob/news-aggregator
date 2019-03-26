@@ -18,6 +18,11 @@ defmodule News.NewsServer do
       {:ok, data} -> News.Articles.create_all_articles(data["articles"])
       true -> "No Articles Found? Something went wrong :(" |> IO.inspect
     end
+    case News.NewsApi.fetch_everything_recent do
+      {:ok, data} -> News.Articles.create_all_articles(data["articles"])
+      true -> "No Articles Found? Something went wrong :(" |> IO.inspect
+    end
+
     schedule_timer(900000)
     {:noreply, []}
   end
