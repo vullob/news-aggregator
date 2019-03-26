@@ -13,7 +13,6 @@ defmodule News.Repo.Migrations.CreateArticles do
 
       timestamps()
     end
-
-   index(:articles, [:title], unique: true)
+    create unique_index(:articles, [:title])
   end
 end

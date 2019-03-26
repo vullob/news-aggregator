@@ -18,6 +18,7 @@ defmodule News.Articles.Article do
   def changeset(article, attrs) do
     article
     |> cast(attrs, [:author, :title, :description, :url, :urlToImage, :publishedAt, :content])
+    |> unique_constraint(:title)
     |> validate_required([:title, :url, :urlToImage, :publishedAt])
   end
 end
