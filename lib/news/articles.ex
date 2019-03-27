@@ -58,6 +58,8 @@ defmodule News.Articles do
 
   def create_all_articles(articles \\ []) do
     articles
+    |> Enum.map(fn a -> Map.put(a, "source_id", Map.get(a["source"] || %{}, "id")) |>
+                        Map.delete("source") end)
     |> Enum.map(fn a -> create_article(a) end)
   end
 

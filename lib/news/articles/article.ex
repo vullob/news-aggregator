@@ -10,6 +10,7 @@ defmodule News.Articles.Article do
     field :title, :string
     field :url, :string
     field :urlToImage, :string
+    belongs_to :source, News.Sources.Source, references: :source_id
 
     timestamps()
   end
@@ -17,7 +18,8 @@ defmodule News.Articles.Article do
   @doc false
   def changeset(article, attrs) do
     article
-    |> cast(attrs, [:author, :title, :description, :url, :urlToImage, :publishedAt, :content])
+    |> cast(attrs, [:author, :title, :description, :url, :urlToImage, :publishedAt, :content, :source_id])
+    |> foreign_key_constraint(:source_id, [message: "source not found"])
     |> unique_constraint(:title)
     |> validate_required([:title, :url, :urlToImage, :publishedAt])
   end
