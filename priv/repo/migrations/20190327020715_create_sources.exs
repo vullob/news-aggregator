@@ -15,7 +15,7 @@ defmodule News.Repo.Migrations.CreateSources do
 
 
     alter table(:articles) do
-      add :source, references(:sources, column: :source_id, type: :string, on_delete: :delete_all), null: true
+      add :source_id, references(:sources, column: :source_id, type: :string, on_delete: :delete_all), null: true
     end
 
   end
