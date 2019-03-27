@@ -7,10 +7,10 @@ defmodule News.Articles.Article do
     field :content, :string, size: 2000
     field :description, :string, size: 2000
     field :publishedAt, :naive_datetime
-    field :title, :string
-    field :url, :string
-    field :urlToImage, :string
-    belongs_to :source, News.Sources.Source, references: :source_id
+    field :title, :string, size: 2000
+    field :url, :string, size: 2000
+    field :urlToImage, :string, size: 2000
+    belongs_to :source, News.Sources.Source, references: :source_id, type: :string
 
     timestamps()
   end
