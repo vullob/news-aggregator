@@ -33,7 +33,8 @@ defmodule News.Articles do
     Repo.all from a in Article,
         preload: [:source],
         limit: 200,
-        offset: ^off
+        offset: ^off,
+        order_by: [desc: :publishedAt]
   end
 
   @doc """
