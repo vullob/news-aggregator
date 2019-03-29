@@ -38,6 +38,10 @@ module.exports = (env, options) => ({
       {
         test: /\.scss$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+      },
+      {
+        test: /\.(jpg|png|svg)$/,
+        loader: "file-loader?name=/images/[name].[ext]",
       }
     ]
   },

@@ -12,6 +12,7 @@ import css from "../css/app.scss"
 import "phoenix_html"
 import jQuery from 'jquery';
 window.jQuery = window.$ = jQuery;
+import socket from './socket'
 
 // Import local files
 //
@@ -22,5 +23,7 @@ import store from './store'
 
 $(() => {
   let node = $('#root')[0];
+  let channel = socket.channel("news", {})
+  window.channel = channel
   root_init(node, store)
 })

@@ -22,6 +22,20 @@ defmodule News.Articles do
     Repo.all(Article)
   end
 
+  def list_articles_from_category(category) do
+    Repo.all from a in Article,
+        join: s in assoc(a, :source),
+        where: s.category == ^category,
+        preload: [:source]
+  end
+
+  def fetch_more_with_offset(off) do
+    Repo.all from a in Article,
+        preload: [:source],
+        limit: 200,
+        offset: ^off
+  end
+
   @doc """
   Gets a single article.
 
@@ -61,7 +75,16 @@ defmodule News.Articles do
     |> Enum.map(fn a -> Map.put(a, "source_id", Map.get(a["source"] || %{}, "id")) |>
                         Map.delete("source") end)
     |> Enum.map(fn a -> create_article(a) end)
+    |> remove_errors
   end
+
+  defp remove_errors(articles) do
+    Enum.reduce(articles, [], fn x, acc -> case x do
+                                                {:ok, data} -> data = data |> Repo.preload(:source); [data | acc]
+                                                {:error, err} -> acc 
+                                                end end)
+  end
+
 
   @doc """
   Updates a article.
