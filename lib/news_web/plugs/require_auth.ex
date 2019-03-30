@@ -5,8 +5,6 @@ defmodule NewsWeb.Plugs.RequireAuth do
 
   def call(conn, _args) do
     token = get_req_header(conn, "x-auth")
-    "TOKEN" |> IO.inspect
-    token |> IO.inspect
     case Phoenix.Token.verify(NewsWeb.Endpoint, "user_id", hd(token), max_age: 86400) do
       {:ok, user_id} ->
         assign(conn, :current_user, News.Users.get_user!(user_id))

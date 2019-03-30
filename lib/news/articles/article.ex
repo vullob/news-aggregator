@@ -11,6 +11,7 @@ defmodule News.Articles.Article do
     field :url, :string, size: 2000
     field :urlToImage, :string, size: 2000
     belongs_to :source, News.Sources.Source, references: :source_id, type: :string
+    many_to_many :users, News.Users.User, join_through: "user_article", on_replace: :delete
 
     timestamps()
   end

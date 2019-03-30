@@ -53,6 +53,8 @@ defmodule News.Articles do
   """
   def get_article!(id), do: Repo.get!(Article, id)
 
+  def get_article(id), do: Repo.get(Article, id) |> Repo.preload(:source)
+
   @doc """
   Creates a article.
 

@@ -5,6 +5,7 @@ defmodule News.Users.User do
   schema "users" do
     field :email, :string
     field :password_hash, :string
+    many_to_many :articles, News.Articles.Article, join_through: "user_article", on_replace: :delete
 
 
     field :password, :string, virtual: true
@@ -21,6 +22,12 @@ defmodule News.Users.User do
     |> put_pass_hash()
     |> validate_format(:email, ~r/@/)
     |> validate_required([:email, :password_hash])
+  end
+
+  def changeset_add_articles(%News.Users.User{} = user, articles) do
+    articles = articles |> Enum.map(&Ecto.Changeset.change/1)
+    Ecto.Changeset.change(user)
+    |> put_assoc(:articles, articles)
   end
 
   # Password validation

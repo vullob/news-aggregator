@@ -82,9 +82,23 @@ defmodule News.Users do
 
   """
   def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
+    with {:ok, _} <- add_articles_to_user(user, attrs["articles"] || []) do
+      user
+      |> User.changeset(attrs)
+      |> Repo.update()
+    else 
+      err -> err
+    end
+  end
+
+  def add_articles_to_user(user, article_ids \\ []) do
+    articles = article_ids |> Enum.map(fn x -> News.Articles.get_article(x) end)
+    changeset = user |> User.changeset_add_articles(articles)
+
+    case changeset |> Repo.update do
+      {:ok, res} -> res
+      error -> error
+    end
   end
 
   @doc """
