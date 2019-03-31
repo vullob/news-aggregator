@@ -8,7 +8,14 @@ import LazyLoad from 'react-lazyload';
 
 
 function Article(props) {
-  const { article: {description, title, url, urlToImage, source}} = props;
+  const { article: {description, title, url, urlToImage, source, publishedAt}, currentDate} = props;
+  const ms_per_hour = 1000 * 60 * 60;
+  const currentDateGMT = new Date(currentDate.valueOf() + currentDate.getTimezoneOffset() + 60000)
+  const hoursSincePublished = Math.floor((currentDateGMT - new Date(publishedAt || undefined))/ms_per_hour);
+  const footerText = hoursSincePublished > 24 ?
+    `Published ${Math.floor(hoursSincePublished/24)} days ago`
+    :
+    `published ${hoursSincePublished} hours ago`;
   return <React.Fragment>
     <LazyLoad offset={0} height={250}>
       <Card as="a" href={url} target="_blank" rel="noopener noreferrer" className="bg-light rounded purple-border">
@@ -17,6 +24,7 @@ function Article(props) {
           <Card.Title className="red-text">{title}</Card.Title>
           {source && <Card.Subtitle className="green-text">{source.name}</Card.Subtitle>}
           <Card.Text className="purple-text">{description}</Card.Text>
+          {publishedAt && <Card.Footer>{footerText}</Card.Footer>}
       </div>
       </Card>
     </LazyLoad>
@@ -42,7 +50,8 @@ class ArticleList extends React.Component {
   }
 
   renderArticles(articles) {
-    return articles.map((article) => <Article article={article}/>)
+    const currentDate = new Date();
+    return articles.map((article) => <Article {...{article, currentDate}}/>)
   }
 
 
