@@ -1,2 +1,37 @@
 /* This file is for your main application css. */
 @import "~bootstrap/scss/bootstrap";
+
+.purple { 
+  color: #7C7D99;
+  border-color: #7C7D99;
+}
+
+.green {
+  color: #808475;
+  border-color: #808475; 
+}
+
+.red {
+  color: #C57375;
+  border-color: #C57375;
+}
+
+.purple-text {
+  color: #7C7D99 !important;
+}
+
+.red-text {
+   color: #C57375 !important;
+}
+
+.green-text {
+ color: #808475 !important;
+}
+
+.purple-border {
+  border-color: #7C7D99; 
+}
+
+.article {
+  padding: 5px;
+}

@@ -11,8 +11,7 @@ defmodule NewsWeb.SourceView do
   end
 
   def render("source.json", %{source: source}) do
-    %{id: source.id,
-      source_id: source.source_id,
+    %{source_id: source.source_id,
       name: source.name,
       description: source.description,
       url: source.url,

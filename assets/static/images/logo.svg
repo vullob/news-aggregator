@@ -1,0 +1,23 @@
+<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg">
+
+ <title/>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <circle fill="#7c7d99" id="svg_1" r="65" cy="75" cx="75" class="cls-1"/>
+  <path fill="#ffffff" id="svg_2" d="m43.72,102.56l70.44,0a0.92,0.92 0 0 0 0.86,-1l0,-54.3a0.92,0.92 0 0 0 -0.86,-1l-70.44,0a0.92,0.92 0 0 0 -0.86,1l0,54.33a0.92,0.92 0 0 0 0.86,0.97z" class="cls-2"/>
+  <path fill="#c57375" id="svg_3" d="m109.4,71.13a1,1 0 0 1 -1,1l-24.89,0a1,1 0 0 1 -1,-1l0,-17.3a1,1 0 0 1 1,-1l24.86,0a1,1 0 0 1 1,1l0,17.3l0.03,0z" class="cls-3"/>
+  <rect fill="#7c7d99" id="svg_4" y="52.81" x="48.92" width="8.67" height="4.55" class="cls-1"/>
+  <rect fill="#808475" id="svg_5" y="69.67" x="48.92" width="29.34" height="2.57" class="cls-1"/>
+  <rect fill="#808475" id="svg_6" y="65.48" x="48.92" width="29.34" height="2.57" class="cls-1"/>
+  <rect fill="#808475" id="svg_7" y="77.51" x="48.92" width="60.49" height="3.04" class="cls-1"/>
+  <rect fill="#808475" id="svg_8" y="82.71" x="48.92" width="60.49" height="3.04" class="cls-1"/>
+  <rect fill="#808475" id="svg_9" y="87.98" x="48.92" width="60.49" height="3.04" class="cls-1"/>
+  <rect fill="#808475" id="svg_10" y="93.49" x="48.92" width="60.49" height="3.04" class="cls-1"/>
+  <path fill="#ffffff" id="svg_11" d="m42,49.48l-5,0.2a0.82,0.82 0 0 0 -0.64,0.95l5,51a0.85,0.85 0 0 0 0.67,0.88l0,-53.03l-0.03,0z" class="cls-2"/>
+  <path fill="#ffffff" id="svg_12" d="m40.51,101.67l-4.86,-49.92l-4.65,0.19a0.83,0.83 0 0 0 -0.64,0.95l9.36,48.58a0.83,0.83 0 0 0 0.7,0.89l0.35,0a1,1 0 0 1 -0.26,-0.69z" class="cls-2"/>
+ </g>
+</svg>
