@@ -23,7 +23,7 @@ class TheChannel {
   }
 
   fetch_moar_articles(offset) {
-    window.channel.push("more_articles", {offset}).receive("ok", (resp) => console.log(resp))
+    window.channel.push("more_articles", {offset}).receive("ok", (resp) => this.addArticles(resp))
   }
 
 }

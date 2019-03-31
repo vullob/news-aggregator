@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import channel from './channel'
+
 import Card from 'react-bootstrap/Card'
 import CardColumns from 'react-bootstrap/CardColumns'
 
 import LazyLoad from 'react-lazyload';
+import InfiniteScroll from 'react-infinite-scroller';
 
 
 function Article(props) {
@@ -57,11 +60,23 @@ class ArticleList extends React.Component {
 
 
   render() {
-    const articles = this.getArticlesOfCategory()
+    const { articles } = this.props;
+    const articlesInCategory = this.getArticlesOfCategory()
+    const numArticles = Object.values(articles).length
     return <div>
+      <InfiniteScroll
+        {...{
+          pageStart: 0,
+          loadMore: () => channel.fetch_moar_articles(numArticles),
+          hasMore: true, //TODO: add this
+          loader: <div className="loader" key={0}>Loading...</div>,
+          useWindow: true
+        }}
+      >
         <CardColumns>
-        {this.renderArticles(articles)}
+        {this.renderArticles(articlesInCategory)}
         </CardColumns>
+      </InfiniteScroll>
       </div>
   }
 }
