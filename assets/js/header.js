@@ -5,7 +5,7 @@ import useImage from 'use-image'
 
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
+import Dropdown from 'react-bootstrap/Dropdown'
 import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
@@ -34,20 +34,20 @@ class Header extends React.Component {
 
   renderDropdowns(names) {
     const { selectedCategory } = this.props;
-    return names.map((name) => <NavDropdown.Item {...{
+    return names.map((name) => <Dropdown.Item {...{
       onSelect: this.handleSelect,
       eventKey: name,
       className: "purple-text",
       active: name == selectedCategory ? "true": undefined,
       key: name}}>
       {name.charAt(0).toUpperCase() + name.slice(1)}
-      </NavDropdown.Item>)
+      </Dropdown.Item>)
   }
 
 
   render(){
     const names = ["general","science", "entertainment", "sports", "business",  "technology", "health"]
-    return  <React.Fragment> <Navbar bg="light" expand="lg">
+    return  <React.Fragment> <Navbar bg="white" expand="lg">
         <Navbar.Brand href="#home">
           <Logo/>
         </Navbar.Brand>
@@ -55,9 +55,12 @@ class Header extends React.Component {
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="mr-auto">
       <Nav.Link href="#home" className="purple-text">Home</Nav.Link>
-      <NavDropdown title="Category" id="basic-nav-dropdown" className="purple-text" >
-        {this.renderDropdowns(names)}
-      </NavDropdown>
+      <Dropdown navbar title="Category">
+        <Dropdown.Toggle childBsPrefix="btn outline-white" className="purple-text" >Category</Dropdown.Toggle>
+        <Dropdown.Menu>
+          {this.renderDropdowns(names)}
+      </Dropdown.Menu>
+      </Dropdown>
     </Nav>
     <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2 purple" />

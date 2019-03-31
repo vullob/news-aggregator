@@ -11,7 +11,7 @@ function Article(props) {
   const { article: {description, title, url, urlToImage, source}} = props;
   return <React.Fragment>
     <LazyLoad offset={0} height={250}>
-      <Card as="a" href={url} target="_blank" rel="noopener noreferrer" className="purple-border">
+      <Card as="a" href={url} target="_blank" rel="noopener noreferrer" className="bg-light rounded purple-border">
         <div className="article">
           <Card.Img {...{variant: 'top', src: urlToImage}}/>
           <Card.Title className="red-text">{title}</Card.Title>
