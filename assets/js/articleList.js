@@ -20,7 +20,7 @@ function Article(props) {
     :
     `published ${hoursSincePublished} hours ago`;
   return <React.Fragment>
-    <LazyLoad offset={0} height={250}>
+    <LazyLoad offset={200} height={350}>
       <Card as="a" href={url} target="_blank" rel="noopener noreferrer" className="bg-light rounded purple-border">
         <div className="article">
           <Card.Img {...{variant: 'top', src: urlToImage}}/>
@@ -54,7 +54,7 @@ class ArticleList extends React.Component {
 
   renderArticles(articles) {
     const currentDate = new Date();
-    return articles.map((article) => <Article {...{article, currentDate}}/>)
+    return articles.map((article) => <Article {...{article, currentDate, key: article.id}}/>)
   }
 
 

@@ -35,3 +35,12 @@
 .article {
   padding: 5px;
 }
+
+.light-green-bg {
+  background-color: #AA9C93 !important;
+}
+
+// this is bootstrap's fault
+.navbar-nav .dropdown.show .dropdown-menu.show .active {
+ background-color: #AA9C93 !important;
+}

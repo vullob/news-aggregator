@@ -7,6 +7,7 @@ import  channel  from './channel'
 
 import Header from './header'
 import ArticleList from './articleList'
+import LoginModal from './loginModal'
 
 export default function root_init(node, store) {
   ReactDOM.render(

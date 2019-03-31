@@ -25,6 +25,7 @@ defmodule NewsWeb.Router do
 
    scope "/api/v1", NewsWeb do
      pipe_through :api
+     resources "/sessions", SessionController, only: [:create]
      resources "/users", UserController, only: [:create]
    end
 

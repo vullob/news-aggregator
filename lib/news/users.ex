@@ -22,7 +22,7 @@ defmodule News.Users do
   end
 
   def get_user_by_email(email) do
-    Repo.get_by(User, email: email)
+    Repo.get_by(User, email: email) |> Repo.preload(:articles)
   end
 
   def get_and_auth_user(email, password) do
