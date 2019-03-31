@@ -5,6 +5,7 @@ import channel from './channel'
 
 import Card from 'react-bootstrap/Card'
 import CardColumns from 'react-bootstrap/CardColumns'
+import Spinner from 'react-bootstrap/Spinner'
 
 import LazyLoad from 'react-lazyload';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -23,7 +24,7 @@ function Article(props) {
     <LazyLoad offset={200} height={350}>
       <Card as="a" href={url} target="_blank" rel="noopener noreferrer" className="bg-light rounded purple-border">
         <div className="article">
-          <Card.Img {...{variant: 'top', src: urlToImage}}/>
+          <Card.Img {...{variant: 'top', src: urlToImage, className: "rounded"}} />
           <Card.Title className="red-text">{title}</Card.Title>
           {source && <Card.Subtitle className="green-text">{source.name}</Card.Subtitle>}
           <Card.Text className="purple-text">{description}</Card.Text>
@@ -63,13 +64,18 @@ class ArticleList extends React.Component {
     const { articles } = this.props;
     const articlesInCategory = this.getArticlesOfCategory()
     const numArticles = Object.values(articles).length
+    debugger;
     return <div>
       <InfiniteScroll
         {...{
           pageStart: 0,
           loadMore: () => channel.fetch_moar_articles(numArticles),
           hasMore: true, //TODO: add this
-          loader: <div className="loader" key={0}>Loading...</div>,
+          loader: <div className="col">
+                      <div className="row justify-content-center">
+                        <Spinner animation="border" className="purple-text" />
+                      </div>
+                    </div>,
           useWindow: true
         }}
       >
