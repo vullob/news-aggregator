@@ -19,7 +19,7 @@ export default function root_init(node, store) {
 class Root extends React.Component {
   constructor(props){
     super(props)
-    window.channel.join("news").receive("ok", (r) => { channel.setArticles(r); console.log(r)});
+    window.channel.join("news").receive("ok", (r) => { console.log(r)});
     window.channel.on("update_news", msg => { channel.addArticles(msg); console.log(msg);})
   }
 

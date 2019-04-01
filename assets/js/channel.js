@@ -22,11 +22,20 @@ class TheChannel {
    return articles.reduce((acc, elem) => {return {...acc, [elem.id]: elem}}, {})
   }
 
-  fetch_moar_articles(offset) {
-    window.channel.push("more_articles", {offset}).receive("ok", (resp) =>  {
-                                                                              if (resp.articles.data.length == 0) {
-                                                                                store.dispatch({type: "STOP_LOADING_ARTICLES"})
+  fetch_moar_articles(publishedBefore , category) {
+    console.log(`Fetching more articles published before ${publishedBefore}, from ${category}`)
+    window.channel.push("more_articles", {publishedBefore, category}).receive("ok", (resp) =>  {
+                                                                              const lastArticlePublished = resp.articles.data[resp.articles.data.length - 1];
+                                                                              const lastFetched = lastArticlePublished ? lastArticlePublished.publishedAt : undefined
+                                                                              const hasMore = lastFetched != undefined
+                                                                              const updateFetchedArticlesAction = {
+                                                                                type: "FETCHED_CATEGORY",
+                                                                                data: {
+                                                                                  category,
+                                                                                  fetched: hasMore ? {lastFetched, hasMore} : {hasMore}
+                                                                                }
                                                                               }
+                                                                              store.dispatch(updateFetchedArticlesAction)
                                                                               this.addArticles(resp)})
   }
 

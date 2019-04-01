@@ -3,15 +3,14 @@ defmodule NewsWeb.NewsChannelChannel do
 
   def join("news", payload, socket) do
     if authorized?(payload) do
-      articles = News.Articles.fetch_more_with_offset(0)
-      {:ok, %{"articles" => NewsWeb.ArticleView.render("index.json", %{articles: articles})}, socket}
+      {:ok, %{}, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
 
-  def handle_in("more_articles", %{"offset" => offset}, socket) do
-      articles = NewsWeb.ArticleView.render("index.json", %{articles: News.Articles.fetch_more_with_offset(offset)})
+  def handle_in("more_articles", %{"publishedBefore" => publishedBefore, "category" => category}, socket) do
+      articles = NewsWeb.ArticleView.render("index.json", %{articles: News.Articles.fetch_more_from_category_after(category, publishedBefore)})
       {:reply, {:ok, %{articles: articles}}, socket}
   end
 

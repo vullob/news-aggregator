@@ -29,7 +29,7 @@
 }
 
 .purple-border {
-  border-color: #7C7D99; 
+  border-color: #7C7D99;
 }
 
 .article {
@@ -47,4 +47,8 @@
 // this is bootstrap's fault
 .navbar-nav .dropdown.show .dropdown-menu.show .active {
  background-color: #AA9C93 !important;
+}
+
+.no-border {
+  border: none !important;
 }

@@ -61,15 +61,15 @@ class ArticleList extends React.Component {
 
 
   render() {
-    const { articles, loadMoreArticles } = this.props;
+    const { articles, lastFetched, selectedCategory} = this.props;
     const articlesInCategory = this.getArticlesOfCategory()
-    const numArticles = Object.values(articles).length
+    const currentFetchState = lastFetched[selectedCategory]
     return <div>
       <InfiniteScroll
         {...{
           pageStart: 0,
-          loadMore: () => channel.fetch_moar_articles(numArticles), // This may break if we store users liked articles in the articles namespace
-          hasMore: loadMoreArticles, // this may break if we implement article specific requests to the server
+          loadMore: () => channel.fetch_moar_articles(currentFetchState.lastFetched, selectedCategory),
+          hasMore: currentFetchState.hasMore, // this may break if we implement article specific requests to the server
           loader: <div className="col">
                       <div className="row justify-content-center">
                         <Spinner animation="border" className="purple-text" />
@@ -86,4 +86,4 @@ class ArticleList extends React.Component {
   }
 }
 
-export default connect((state) => {return {loadMoreArticles: state.loadMoreArticles, articles: state.articles, selectedCategory: state.selectedCategory}})(ArticleList)
+export default connect((state) => {return {lastFetched: state.lastFetched,articles: state.articles, selectedCategory: state.selectedCategory}})(ArticleList)

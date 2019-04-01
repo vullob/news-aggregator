@@ -1,4 +1,17 @@
 import { createStore, combineReducers } from 'redux'
+const currentDate = new Date()
+const currentDateGMT = new Date(currentDate.valueOf() + currentDate.getTimezoneOffset() + 60000).toISOString()
+const lastFetchedInitialState =
+  {
+    general: {hasMore: true, lastFetched: currentDateGMT},
+    science: {hasMore: true, lastFetched: currentDateGMT},
+    entertainment: {hasMore: true, lastFetched: currentDateGMT},
+    sports: {hasMore: true, lastFetched: currentDateGMT},
+    business: {hasMore: true, lastFetched: currentDateGMT},
+    technology: {hasMore: true, lastFetched: currentDateGMT},
+    health: {hasMore:true, lastFetched: currentDateGMT}
+  }
+
 
 function selectedCategory(state = 'general', action) {
   switch (action.type) {
@@ -20,10 +33,10 @@ function articles(state = {}, action){
   }
 }
 
-function loadMoreArticles(state = true, action){
-  switch (action.type){
-    case "STOP_LOADING_ARTICLES":
-      return false;
+function lastFetched(state = lastFetchedInitialState, action){
+  switch (action.type) {
+    case 'FETCHED_CATEGORY':
+      return {...state, [action.data.category]: {...state[action.data.category], ...action.data.fetched}};
     default:
       return state;
   }
@@ -61,9 +74,10 @@ function loginModal(state = {show: false, type: 'login', errors: []}, action) {
 
 
 
+
 function root_reducer(state0, action) {
   console.log('reducer', state0, action)
-  const reducer = combineReducers({selectedCategory, articles, session, loginModal, loadMoreArticles});
+  const reducer = combineReducers({selectedCategory, articles, session, loginModal, lastFetched});
   const state1 = reducer(state0, action)
   return state1
 }

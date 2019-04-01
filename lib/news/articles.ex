@@ -29,6 +29,16 @@ defmodule News.Articles do
         preload: [:source]
   end
 
+  def fetch_more_from_category_after(category, publishedBefore) do
+      {:ok, datetime} = NaiveDateTime.from_iso8601(publishedBefore) |> IO.inspect
+      Repo.all from a in Article,
+        join: s in assoc(a, :source),
+        where: s.category == ^category and a.publishedAt < ^datetime,
+        preload: [:source],
+        limit: 200,
+        order_by: [desc: :publishedAt]
+  end
+
   def fetch_more_with_offset(off) do
     Repo.all from a in Article,
         preload: [:source],
