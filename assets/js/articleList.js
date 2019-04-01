@@ -22,7 +22,7 @@ function Article(props) {
     `published ${hoursSincePublished} hours ago`;
   return <React.Fragment>
     <LazyLoad offset={400} height={350}>
-      <Card as="a" href={url} target="_blank" rel="noopener noreferrer" className="bg-light rounded purple-border">
+      <Card as="a" href={url} target="_blank" rel="noopener noreferrer" className="bg-light rounded no-border">
         <div className="article">
           <Card.Img {...{variant: 'top', src: urlToImage, className: "rounded"}} />
           <Card.Title className="red-text">{title}</Card.Title>

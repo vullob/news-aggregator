@@ -74,15 +74,15 @@ class Header extends React.Component {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="mr-auto">
-      <Nav.Link onClick={() => this.handleSelect("general")}className="purple-text">Home</Nav.Link>
+      <Nav.Link onClick={() => this.handleSelect("general")} className="purple-text">Home</Nav.Link>
       <Dropdown navbar title="Category">
-        <Dropdown.Toggle childBsPrefix="btn outline-white" className="purple-text" >Category</Dropdown.Toggle>
+        <Dropdown.Toggle childBsPrefix="btn nav-link" className="purple-text" >Category</Dropdown.Toggle>
         <Dropdown.Menu>
           {this.renderDropdowns(names)}
       </Dropdown.Menu>
       </Dropdown>
-    {session && <Button variant="outline" className="purple-text" onClick={this.logout}>Logout</Button>}
-    {!session && <Button variant="outline" className="purple-text" onClick={this.showLoginModal} >Login</Button>}
+    {session && <Nav.Link variant="outline" className="purple-text" onClick={this.logout}>Logout</Nav.Link>}
+    {!session && <Nav.Link variant="outline" className="purple-text" onClick={this.showLoginModal} >Login</Nav.Link>}
     </Nav>
     <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2 purple" />
