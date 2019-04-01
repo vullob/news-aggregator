@@ -15,25 +15,31 @@ defmodule News.NewsServer do
   def handle_info(:update, state) do
 
     # only need to update these once a day, or on start
-    state = if rem(Map.get(state, :time) || 0, 86400000) do
+    state = if rem(Map.get(state, :time) || 0, 86400000) == 0 do
                 case News.NewsApi.fetch_sources do
                   {:ok, data} -> News.Sources.create_all_sources(data["sources"])
                   _ -> "No Sources Found? Something went wrong :(" |> IO.inspect
                 end
                 Map.put(state, :time, 0)
-          else Map.put(state, :time, state[:time] || 0 + 900000) end
-    case News.NewsApi.fetch_top_headlines do
-      {:ok, data} -> News.Articles.create_all_articles(data["articles"])
-                      |> broadcast
-      _ -> "No Articles Found? Something went wrong :(" |> IO.inspect;
+          else Map.put(state, :time, (state[:time] || 0) + 900000) end
+    if rem(Map.get(state, :time) ,3600000) == 0 do # every hour, we update unpopular categories
+        ["science", "entertainment", "sports", "business", "health"]
+        |> Enum.each(fn category -> case News.NewsApi.fetch_category(category) do
+                                                                    {:ok, data} -> data["articles"]
+                                                                                    |> Enum.map(fn article -> Map.put(article, "article_category", category) end)
+                                                                                    |> News.Articles.create_all_articles
+                                                                                    |> broadcast
+                                                                      _ -> "No Articles Found? Something went wrong :(" |> IO.inspect;
+                                                                    end end)
     end
-    case News.NewsApi.fetch_everything_recent do
-      {:ok, data} -> News.Articles.create_all_articles(data["articles"])
-                      |> broadcast
-      _ -> "No Articles Found? Something went wrong :(" |> IO.inspect;
-    end
-
-
+    ["general", "technology"]
+      |> Enum.each(fn category -> case News.NewsApi.fetch_category(category) do
+                                                                    {:ok, data} -> data["articles"]
+                                                                                    |> Enum.map(fn article -> Map.put(article, "article_category", category) end)
+                                                                                    |> News.Articles.create_all_articles
+                                                                                    |> broadcast
+                                                                      _ -> "No Articles Found? Something went wrong :(" |> IO.inspect;
+                                                                    end end)
     schedule_timer(900000)
     {:noreply, state}
   end

@@ -44,13 +44,8 @@ class ArticleList extends React.Component {
   getArticlesOfCategory() {
     const { articles, selectedCategory } = this.props;
     return Object.values(articles).filter((article) => {
-      switch(selectedCategory) {
-        case "general":
-          return !article.source || article.source.category == selectedCategory;
-        default:
-          return article.source && article.source.category == selectedCategory;
-      }
-    })
+          return article.article_category == selectedCategory;
+      })
   }
 
   renderArticles(articles) {

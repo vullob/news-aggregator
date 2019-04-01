@@ -7,7 +7,7 @@ defmodule News.Repo.Migrations.CreateSources do
       add :name, :string, null: false, default: ""
       add :description, :string, null: false, default: "", size: 2000
       add :url, :string, null: false
-      add :category, :string, null: false, default: ""
+      add :category, :string, null: false, default: "general"
 
       timestamps()
     end

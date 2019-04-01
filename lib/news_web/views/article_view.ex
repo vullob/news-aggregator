@@ -20,6 +20,7 @@ defmodule NewsWeb.ArticleView do
       urlToImage: article.urlToImage,
       publishedAt: article.publishedAt,
       content: article.content,
+      article_category: article.article_category,
       source: source}
   end
 end
