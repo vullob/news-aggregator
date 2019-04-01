@@ -35,7 +35,7 @@ class TheServer {
           sessionStorage.setItem('token', resp.data.token)
           sessionStorage.setItem('user', resp.data.user_id)
           store.dispatch({
-            type: 'CLEAR_LOGIN_MODAL_ERROR'
+            type: 'CLEAR_LOGIN_MODAL_ERRORS'
           })
           store.dispatch({
             type: 'HIDE_LOGIN_MODAL'

@@ -27,6 +27,7 @@ class LoginModal extends React.Component {
 
   hideModal() {
     const { dispatch } = this.props;
+    dispatch({ type: 'CLEAR_LOGIN_MODAL_ERRORS' })
     const closeModalAction = {
       type: "HIDE_LOGIN_MODAL"
     }
