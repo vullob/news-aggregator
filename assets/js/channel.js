@@ -23,7 +23,11 @@ class TheChannel {
   }
 
   fetch_moar_articles(offset) {
-    window.channel.push("more_articles", {offset}).receive("ok", (resp) => this.addArticles(resp))
+    window.channel.push("more_articles", {offset}).receive("ok", (resp) =>  {
+                                                                              if (resp.articles.data.length == 0) {
+                                                                                store.dispatch({type: "STOP_LOADING_ARTICLES"})
+                                                                              }
+                                                                              this.addArticles(resp)})
   }
 
 }

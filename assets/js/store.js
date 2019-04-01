@@ -20,6 +20,15 @@ function articles(state = {}, action){
   }
 }
 
+function loadMoreArticles(state = true, action){
+  switch (action.type){
+    case "STOP_LOADING_ARTICLES":
+      return false;
+    default:
+      return state;
+  }
+}
+
 function session(state = null, action){
   switch(action.type) {
     case 'NEW_SESSION':
@@ -54,7 +63,7 @@ function loginModal(state = {show: false, type: 'login', errors: []}, action) {
 
 function root_reducer(state0, action) {
   console.log('reducer', state0, action)
-  const reducer = combineReducers({selectedCategory, articles, session, loginModal});
+  const reducer = combineReducers({selectedCategory, articles, session, loginModal, loadMoreArticles});
   const state1 = reducer(state0, action)
   return state1
 }
