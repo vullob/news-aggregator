@@ -17,7 +17,6 @@ defmodule NewsWeb.SessionController do
        conn
         |> put_resp_header("content-type", "applcication/json; charset=UTF-8")
         |> send_resp(:created, Jason.encode!(resp))
-
     end
 
   end

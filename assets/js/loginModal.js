@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
 
 import LoginForm from './loginForm'
 import api from './api'
@@ -20,6 +21,7 @@ class LoginModal extends React.Component {
     this.changePassword = this.changePassword.bind(this)
     this.changeEmail = this.changeEmail.bind(this)
     this.login = this.login.bind(this)
+    this.renderModalErrors = this.renderModalErrors.bind(this)
   }
 
 
@@ -44,6 +46,14 @@ class LoginModal extends React.Component {
     api.create_session(email, password)
   }
 
+  renderModalErrors(){
+    const { modal: {errors} } = this.props
+    return errors.reduce((acc, error, i) => { if(error.type == 'loginError') {
+                                                acc.push(<Alert {...{key: i, variant: "danger"}}>{error.msg}</Alert>);
+                                              }
+                                              return acc}, [])
+  }
+
   render() {
     const { modal: {show}} = this.props;
     const { email, password } = this.state
@@ -55,6 +65,7 @@ class LoginModal extends React.Component {
           <Modal.Title className="green-text">Login</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {this.renderModalErrors()}
           <LoginForm {...{email, password, changeEmail: this.changeEmail, changePassword: this.changePassword}}/>
         </Modal.Body>
         <Modal.Footer>

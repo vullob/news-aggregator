@@ -21,7 +21,6 @@ class Root extends React.Component {
     super(props)
     window.channel.join("news").receive("ok", (r) => { channel.setArticles(r); console.log(r)});
     window.channel.on("update_news", msg => { channel.addArticles(msg); console.log(msg);})
-    window.theChannel = channel
   }
 
   render() {

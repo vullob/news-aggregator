@@ -21,7 +21,7 @@ function Article(props) {
     :
     `published ${hoursSincePublished} hours ago`;
   return <React.Fragment>
-    <LazyLoad offset={200} height={350}>
+    <LazyLoad offset={400} height={350}>
       <Card as="a" href={url} target="_blank" rel="noopener noreferrer" className="bg-light rounded purple-border">
         <div className="article">
           <Card.Img {...{variant: 'top', src: urlToImage, className: "rounded"}} />
@@ -64,12 +64,11 @@ class ArticleList extends React.Component {
     const { articles } = this.props;
     const articlesInCategory = this.getArticlesOfCategory()
     const numArticles = Object.values(articles).length
-    debugger;
     return <div>
       <InfiniteScroll
         {...{
           pageStart: 0,
-          loadMore: () => channel.fetch_moar_articles(numArticles),
+          loadMore: () => channel.fetch_moar_articles(numArticles), // This may break if we store users liked articles in the articles namespace
           hasMore: true, //TODO: add this
           loader: <div className="col">
                       <div className="row justify-content-center">

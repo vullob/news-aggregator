@@ -33,6 +33,8 @@ function session(state = null, action){
 
 function loginModal(state = {show: false, type: 'login', errors: []}, action) {
   switch (action.type) {
+      case 'LOGIN_ERROR':
+        return {...state, errors: [{type: "loginError", msg: "Unknown Email Address or Password"}]}
       case 'SHOW_LOGIN_MODAL':
         return {...state, show: true};
       case 'HIDE_LOGIN_MODAL':
