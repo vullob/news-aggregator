@@ -1,7 +1,7 @@
-<div id="root">
+<div id="root" class="container-fluid">
   <div class="row">
-    <div class="col-12">
-      <p>React Component Loading</p>
+    <div class="col">
+      <img style="height: 100%;width: 100%;" src="<%= NewsWeb.Endpoint.static_path("/images/logo.svg")%>"</img>
     </div>
   </div>
 </div>
