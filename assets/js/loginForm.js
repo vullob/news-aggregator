@@ -9,9 +9,8 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { email, password, changeEmail, changePassword } = this.props;
-    return (
-    <Form>
+    const { email, password, changeEmail, changePassword, type} = this.props;
+    return <React.Fragment>
       <Form.Group controlId="formBasicEmail">
         <Form.Label className="purple-text">Email address</Form.Label>
         <Form.Control type="email" value={email} placeholder="Email" className="purple" onChange={changeEmail}/>
@@ -19,9 +18,9 @@ class LoginForm extends React.Component {
       <Form.Group controlId="formBasicPassword">
         <Form.Label className="purple-text">Password</Form.Label>
         <Form.Control type="password" placeholder="Password" value={password} className="purple" onChange={changePassword}/>
+        {type == 'register' && <small className="text-muted green-text">Passwords must be at least 7 characters in length</small>}
       </Form.Group>
-  </Form>
-    )
+    </React.Fragment>
   }
 }
 

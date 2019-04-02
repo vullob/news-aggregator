@@ -21,14 +21,14 @@ function Article(props) {
     :
     `published ${hoursSincePublished} hours ago`;
   return <React.Fragment>
-    <LazyLoad offset={400} height={350}>
+    <LazyLoad offset={450} height={210}>
       <Card as="a" href={url} target="_blank" rel="noopener noreferrer" className="bg-light rounded no-border">
         <div className="article">
           <Card.Img {...{variant: 'top', src: urlToImage, className: "rounded"}} />
           <Card.Title className="red-text">{title}</Card.Title>
           {source && <Card.Subtitle className="green-text">{source.name}</Card.Subtitle>}
           <Card.Text className="purple-text">{description}</Card.Text>
-          {publishedAt && <Card.Footer className="red-text">{footerText}</Card.Footer>}
+          {publishedAt && <Card.Footer className="text-muted red-text">{footerText}</Card.Footer>}
       </div>
       </Card>
     </LazyLoad>
@@ -45,7 +45,8 @@ class ArticleList extends React.Component {
     const { articles, selectedCategory } = this.props;
     return Object.values(articles).filter((article) => {
           return article.article_category == selectedCategory;
-      })
+    }) //.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)) uncomment this for sorted articles
+       // Doesn't format great in CardColumns
   }
 
   renderArticles(articles) {
@@ -59,8 +60,7 @@ class ArticleList extends React.Component {
     const { articles, lastFetched, selectedCategory} = this.props;
     const articlesInCategory = this.getArticlesOfCategory()
     const currentFetchState = lastFetched[selectedCategory]
-    return <div>
-      <InfiniteScroll
+    return <InfiniteScroll
         {...{
           pageStart: 0,
           loadMore: () => channel.fetch_moar_articles(currentFetchState.lastFetched, selectedCategory),
@@ -77,7 +77,6 @@ class ArticleList extends React.Component {
         {this.renderArticles(articlesInCategory)}
         </CardColumns>
       </InfiniteScroll>
-      </div>
   }
 }
 

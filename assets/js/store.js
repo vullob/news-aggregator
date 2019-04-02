@@ -57,6 +57,8 @@ function loginModal(state = {show: false, type: 'login', errors: []}, action) {
   switch (action.type) {
       case 'LOGIN_ERROR':
         return {...state, errors: [{type: "loginError", msg: "Unknown Email Address or Password"}]}
+      case 'REGISTER_ERROR':
+        return {...state, errors: action.data}
       case 'SHOW_LOGIN_MODAL':
         return {...state, show: true};
       case 'HIDE_LOGIN_MODAL':
@@ -65,7 +67,7 @@ function loginModal(state = {show: false, type: 'login', errors: []}, action) {
         return {...state, errors: action.data}
       case 'CLEAR_LOGIN_MODAL_ERRORS':
         return {...state, errors: []}
-      case 'SET_MODAL_TYPE':
+      case 'SET_LOGIN_MODAL_TYPE':
         return {...state, type: action.data}
       default:
         return state;

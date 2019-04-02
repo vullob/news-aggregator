@@ -46,11 +46,33 @@ class TheServer {
           })
         },
           (resp) =>{
-            console.log(resp)
-           store.dispatch({
+            store.dispatch({
                 type: "LOGIN_ERROR",
             })
           })
+   }
+
+   create_user(email, password, password_confirmation) {
+      this.send_post('/api/v1/users',
+         {user: {email, password, password_confirmation}},
+         (resp) => {
+            this.create_session(email, password);
+         },
+         (resp) => {
+            const reqErrors = resp.responseJSON.errors
+            const registerErrors = Object.keys(reqErrors).map(key =>{
+               if (key != 'password_hash'){
+                  return {type: 'registerError', component: key, msg: reqErrors[key][0]}
+               }  else {
+                  return {}
+               }
+            })
+            const registerErrorAction = {
+                  type: 'REGISTER_ERROR',
+                  data: registerErrors
+            }
+            store.dispatch(registerErrorAction)
+         })
    }
 
    send_patch(path, data, callback, error) {
