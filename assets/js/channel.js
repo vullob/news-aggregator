@@ -22,6 +22,24 @@ class TheChannel {
    return articles.reduce((acc, elem) => {return {...acc, [elem.id]: elem}}, {})
   }
 
+  search(query){
+    console.log(`searching for ${query}`)
+    window.channel.push("search", {query}).receive("ok", (resp) => {
+      const { articles: {data}} = resp;
+      const ids = data.map((article) => article.id)
+      store.dispatch({
+        type: 'SET_SEARCH_ARTICLES',
+        data: ids
+      })
+      this.addArticles(resp);
+      store.dispatch({
+        type: 'SET_PAGE_TYPE',
+        data: 'search'
+      })
+    })
+
+  }
+
   fetch_moar_articles(publishedBefore , category) {
     console.log(`Fetching more articles published before ${publishedBefore}, from ${category}`)
     window.channel.push("more_articles", {publishedBefore, category}).receive("ok", (resp) =>  {

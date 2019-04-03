@@ -12,6 +12,7 @@ import Button from 'react-bootstrap/Button'
 
 import logo from '../static/images/logo.svg'
 import LoginModal from './loginModal'
+import channel from './channel'
 
 
 const Logo = (props) => {
@@ -24,6 +25,8 @@ class Header extends React.Component {
     this.handleSelect = this.handleSelect.bind(this)
     this.showLoginModal = this.showLoginModal.bind(this)
     this.logout = this.logout.bind(this)
+    this.changeSearch = this.changeSearch.bind(this)
+    this.search = this.search.bind(this)
   }
 
   handleSelect(e) {
@@ -33,6 +36,10 @@ class Header extends React.Component {
       data: e
     }
     dispatch(updateCategoryAction)
+    dispatch({
+      type: 'SET_PAGE_TYPE',
+      data: 'browse'
+    })
   }
 
   renderDropdowns(names) {
@@ -55,6 +62,21 @@ class Header extends React.Component {
     dispatch(closeSessionAction)
   }
 
+  changeSearch(e){
+    const { dispatch } = this.props
+    const updateQueryAction = {
+      type: 'UPDATE_SEARCH_QUERY',
+      data: e.target.value
+    }
+    dispatch(updateQueryAction)
+  }
+
+  search() {
+    const { searchQuery, dispatch} = this.props
+    channel.search(searchQuery)
+
+  }
+
 
   showLoginModal(){
     const { dispatch } = this.props;
@@ -66,9 +88,9 @@ class Header extends React.Component {
 
   render(){
     const names = ["general","science", "entertainment", "sports", "business",  "technology", "health"]
-    const { session , loginModal: {show}} = this.props;
+    const { session , loginModal: {show}, searchQuery} = this.props;
     return  <React.Fragment> <Navbar bg="white" expand="lg">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand onClick={() => this.handleSelect("general")}>
           <Logo/>
         </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -85,8 +107,8 @@ class Header extends React.Component {
     {!session && <Nav.Link variant="outline" className="purple-text" onClick={this.showLoginModal} >Login</Nav.Link>}
     </Nav>
     <Form inline>
-      <FormControl type="text" placeholder="Search" className="mr-sm-2 purple" />
-      <Button variant="outline" className="purple">Search</Button>
+      <FormControl type="text" placeholder="Search" className="mr-sm-2 purple" value={searchQuery} onChange={this.changeSearch}/>
+      <Button variant="outline" className="purple" onClick={this.search}>Search</Button>
     </Form>
   </Navbar.Collapse>
       </Navbar>
@@ -98,4 +120,5 @@ class Header extends React.Component {
 
 export default connect((state) => {return {loginModal: state.loginModal,
   session: state.session,
+  searchQuery: state.searchQuery,
   selectedCategory: state.selectedCategory}})(Header)

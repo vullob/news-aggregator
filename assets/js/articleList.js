@@ -57,14 +57,16 @@ class ArticleList extends React.Component {
 
 
   render() {
-    const { articles, lastFetched, selectedCategory} = this.props;
-    const articlesInCategory = this.getArticlesOfCategory()
+    const { articles, lastFetched, selectedCategory, searchArticles, pageType} = this.props;
+    const articlesInCategory = pageType == 'browse' ? this.getArticlesOfCategory() : searchArticles.map((id) => articles[id])
     const currentFetchState = lastFetched[selectedCategory]
-    return <InfiniteScroll
+    return <React.Fragment>
+      {pageType == 'search' && <div class="row purple"><strong>Search Results</strong></div>}
+      <InfiniteScroll
         {...{
           pageStart: 0,
           loadMore: () => channel.fetch_moar_articles(currentFetchState.lastFetched, selectedCategory),
-          hasMore: currentFetchState.hasMore, // this may break if we implement article specific requests to the server
+          hasMore: pageType == 'browse' ? currentFetchState.hasMore : false, // this may break if we implement article specific requests to the server
           loader: <div className="col">
                       <div className="row justify-content-center">
                         <Spinner animation="border" className="purple-text" />
@@ -77,7 +79,8 @@ class ArticleList extends React.Component {
         {this.renderArticles(articlesInCategory)}
         </CardColumns>
       </InfiniteScroll>
+    </React.Fragment>
   }
 }
 
-export default connect((state) => {return {lastFetched: state.lastFetched,articles: state.articles, selectedCategory: state.selectedCategory}})(ArticleList)
+export default connect((state) => {return {lastFetched: state.lastFetched,articles: state.articles, selectedCategory: state.selectedCategory, searchArticles: state.searchArticles, pageType: state.pageType}})(ArticleList)

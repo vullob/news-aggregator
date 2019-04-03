@@ -14,6 +14,11 @@ defmodule NewsWeb.NewsChannelChannel do
       {:reply, {:ok, %{articles: articles}}, socket}
   end
 
+  def handle_in("search", %{"query" => query}, socket) do
+    articles = NewsWeb.ArticleView.render("index.json", %{articles: News.Articles.search(query)})
+    {:reply, {:ok, %{articles: articles}}, socket}
+  end
+
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
   def handle_in("ping", payload, socket) do

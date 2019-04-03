@@ -46,6 +46,13 @@ defmodule News.Articles do
         order_by: [desc: :publishedAt]
   end
 
+  def search(query) do
+    Repo.all from a in Article,
+      where: like(a.title, ^("%#{query}%")) or like(a.description, ^("%#{query}%")),
+      preload: [:source],
+      order_by: [desc: :publishedAt]
+  end
+
   @doc """
   Gets a single article.
 

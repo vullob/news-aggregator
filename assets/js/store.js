@@ -33,12 +33,45 @@ function articles(state = {}, action){
   }
 }
 
+function pageType(state = 'browse', action) {
+  switch (action.type) {
+    case 'SET_PAGE_TYPE':
+      return action.data;
+    case 'RESET_PAGE_TYPE':
+      return 'browse';
+    default:
+      return state;
+  }
+}
+
 function lastFetched(state = lastFetchedInitialState, action){
   switch (action.type) {
     case 'FETCHED_CATEGORY':
       return {...state, [action.data.category]: {...state[action.data.category], ...action.data.fetched}};
     default:
       return state;
+  }
+}
+
+function searchQuery(state = "", action){
+  switch(action.type) {
+    case 'UPDATE_SEARCH_QUERY':
+      return action.data;
+    case 'RESET_SEARCH_QUERY':
+      return '';
+    default:
+      return state
+  }
+}
+
+function searchArticles(state = [], action) {
+  switch(action.type) {
+    case 'SET_SEARCH_ARTICLES':
+      return action.data;
+    case 'RESET_SEARCH_ARTICLES':
+      return [];
+    default:
+      return state
   }
 }
 
@@ -79,7 +112,7 @@ function loginModal(state = {show: false, type: 'login', errors: []}, action) {
 
 function root_reducer(state0, action) {
   console.log('reducer', state0, action)
-  const reducer = combineReducers({selectedCategory, articles, session, loginModal, lastFetched});
+  const reducer = combineReducers({selectedCategory, articles, session, loginModal, lastFetched, searchQuery, searchArticles, pageType});
   const state1 = reducer(state0, action)
   return state1
 }
