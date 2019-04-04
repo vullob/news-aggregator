@@ -3,13 +3,29 @@ import { connect } from 'react-redux';
 
 import channel from './channel'
 
+import Button from 'react-bootstrap/Button'
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import Card from 'react-bootstrap/Card'
 import CardColumns from 'react-bootstrap/CardColumns'
 import Spinner from 'react-bootstrap/Spinner'
 
 import LazyLoad from 'react-lazyload';
 import InfiniteScroll from 'react-infinite-scroller';
+import like from '../static/images/like.svg'
+import liked from '../static/images/liked.svg'
+import share from '../static/images/share.svg'
 
+const Like = (props) => {
+    return<img {...{src: like, height: 25, width: 25}}/>
+  }
+
+const Liked = (props) => {
+    return<img {...{src: liked, height: 25, width: 25}}/>
+  }
+
+const Share = (props) => {
+    return<img {...{src: share, height: 25, width: 25}}/>
+  }
 
 function Article(props) {
   const { article: {description, title, url, urlToImage, source, publishedAt}, currentDate} = props;
@@ -22,14 +38,20 @@ function Article(props) {
     `published ${hoursSincePublished} hours ago`;
   return <React.Fragment>
     <LazyLoad offset={450} height={210}>
-      <Card as="a" href={url} target="_blank" rel="noopener noreferrer" className="bg-light rounded no-border">
-        <div className="article">
-          <Card.Img {...{variant: 'top', src: urlToImage, className: "rounded"}} />
+      <Card rel="noopener noreferrer" className="bg-light rounded no-border">
+      <Card.Img {...{variant: 'top', src: urlToImage, className: "rounded"}} />
+        <Card.Body as="a" href={url} target="_blank">
           <Card.Title className="red-text">{title}</Card.Title>
           {source && <Card.Subtitle className="green-text">{source.name}</Card.Subtitle>}
           <Card.Text className="purple-text">{description}</Card.Text>
-          {publishedAt && <Card.Footer className="text-muted red-text">{footerText}</Card.Footer>}
-      </div>
+        </Card.Body>
+        <Card.Footer>
+          <div className="social-bar text-muted red-text">
+            <span>{publishedAt && footerText}   </span>
+            <span><Button variant="light"><Like/></Button>   </span>
+            <span><Button variant="light"><Share/></Button></span>
+          </div>
+        </Card.Footer>
       </Card>
     </LazyLoad>
   </React.Fragment>

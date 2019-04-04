@@ -89,7 +89,7 @@ class Header extends React.Component {
   render(){
     const names = ["general","science", "entertainment", "sports", "business",  "technology", "health"]
     const { session , loginModal: {show}, searchQuery} = this.props;
-    return  <React.Fragment> <Navbar bg="white" expand="lg">
+    return  <React.Fragment> <Navbar bg="light" expand="lg">
         <Navbar.Brand onClick={() => this.handleSelect("general")}>
           <Logo/>
         </Navbar.Brand>
