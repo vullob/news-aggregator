@@ -27,6 +27,11 @@ class Header extends React.Component {
     this.logout = this.logout.bind(this)
     this.changeSearch = this.changeSearch.bind(this)
     this.search = this.search.bind(this)
+    if(sessionStorage.getItem("user") != null) { props.dispatch({type: "NEW_SESSION", data: {
+                                                                                          user_id: sessionStorage.getItem("user"),
+                                                                                          token: sessionStorage.getItem("token"),
+    }})
+    }
   }
 
   handleSelect(e) {
