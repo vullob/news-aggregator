@@ -22,7 +22,9 @@ defmodule News.Users do
   end
 
   def get_user_by_email(email) do
-    Repo.get_by(User, email: email) |> Repo.preload(:articles)
+    Repo.one from u in User,
+      where: u.email == ^email,
+      preload: [articles: :source]
   end
 
   def get_and_auth_user(email, password) do
@@ -48,8 +50,14 @@ defmodule News.Users do
       ** (Ecto.NoResultsError)
 
   """
+
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user(id) do
+    Repo.one from u in User,
+        preload: [articles: :source],
+        where: u.id == ^id
+  end
   @doc """
   Creates a user.
 
@@ -82,11 +90,17 @@ defmodule News.Users do
 
   """
   def update_user(%User{} = user, attrs) do
+    user |> IO.inspect
+    attrs |> IO.inspect
     with {:ok, _} <- add_articles_to_user(user, attrs["articles"] || []) do
       user
       |> User.changeset(attrs)
       |> Repo.update()
-    else 
+      |> case do
+        {:ok, user} -> {:ok, News.Users.get_user(user.id)}
+        error -> error |> IO.inspect
+        end
+    else
       err -> err
     end
   end
@@ -96,7 +110,7 @@ defmodule News.Users do
     changeset = user |> User.changeset_add_articles(articles)
 
     case changeset |> Repo.update do
-      {:ok, res} -> res
+      {:ok, res} -> {:ok, res}
       error -> error
     end
   end

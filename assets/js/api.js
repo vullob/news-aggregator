@@ -30,10 +30,13 @@ class TheServer {
       this.send_post("/api/v1/sessions",
         {email, password},
         (resp) => {
+           const {articles, token, id} = resp.data
           //@TODO liked Articles are returned in this response
           //they need to be parsed into the store
-          sessionStorage.setItem('token', resp.data.token)
-          sessionStorage.setItem('user', resp.data.user_id)
+          sessionStorage.setItem('token', token)
+          sessionStorage.setItem('user', id)
+          sessionStorage.setItem('articles', JSON.stringify(articles))
+          const sessionArticlesIds = articles.map((a) => a.id)
           store.dispatch({
             type: 'CLEAR_LOGIN_MODAL_ERRORS'
           })
@@ -41,8 +44,12 @@ class TheServer {
             type: 'HIDE_LOGIN_MODAL'
           })
           store.dispatch({
+            type: "ADD_MORE_ARTICLES",
+            date: articles.reduce((acc, elem) => {return {...acc, [elem.id]: elem}}, {})
+          })
+          store.dispatch({
             type: "NEW_SESSION",
-            data: resp.data,
+            data: {...resp.data, articles: sessionArticlesIds, user_id: id},
           })
         },
           (resp) =>{
@@ -73,6 +80,19 @@ class TheServer {
             }
             store.dispatch(registerErrorAction)
          })
+   }
+
+   update_user(user) {
+      this.send_patch(`/api/v1/users/${user.user_id}`,
+         {id: user.user_id, user},
+         (resp) => {
+            sessionStorage.setItem('user', resp.data.user_id)
+            store.dispatch({
+               type: 'UPDATE_SESSION_ARTICLES',
+               data: resp.data.articles.map((a) => a.id)
+            })
+         }
+      )
    }
 
    send_patch(path, data, callback, error) {
