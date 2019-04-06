@@ -36,6 +36,8 @@ function Article(props) {
     `Published ${Math.floor(hoursSincePublished/24)} days ago`
     :
     `published ${hoursSincePublished} hours ago`;
+  const shareId = "shareButton" + props.article.id;
+  var clipboard = new Clipboard('.shareButton');
   return <React.Fragment>
     <LazyLoad offset={450} height={210}>
       <Card rel="noopener noreferrer" className="bg-light rounded no-border">
@@ -49,7 +51,7 @@ function Article(props) {
           <div className="social-bar text-muted red-text">
             <span>{publishedAt && footerText}   </span>
             <span><Button variant="light"><Like/></Button>   </span>
-            <span><Button variant="light"><Share/></Button></span>
+            <span><Button variant="light" className="shareButton" data-clipboard-action="copy" data-clipboard-text={url} id={shareId} value={url}><Share/></Button></span>
           </div>
         </Card.Footer>
       </Card>

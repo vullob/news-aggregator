@@ -103,6 +103,7 @@ class Header extends React.Component {
           {this.renderDropdowns(names)}
       </Dropdown.Menu>
       </Dropdown>
+      <Nav.Link onClick={() => this.handleSelect("general")} className="purple-text">Favorites</Nav.Link>
     {session && <Nav.Link variant="outline" className="purple-text" onClick={this.logout}>Logout</Nav.Link>}
     {!session && <Nav.Link variant="outline" className="purple-text" onClick={this.showLoginModal} >Login</Nav.Link>}
     </Nav>
