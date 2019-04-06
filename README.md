@@ -19,7 +19,8 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
 
-Images:
+## Attribution
+
 https://www.iconfinder.com/icons/353438/internet_share_icon, Attribution 4.0 International, Bogdan Rosu Creative
 https://www.iconfinder.com/icons/171439/heart_love_icon, Attribution 4.0 International, Danilo Demarco @ http://www.danilodemarco.com/
 https://www.iconfinder.com/icons/299063/heart_icon, Attribution 4.0 International, Paomedia
