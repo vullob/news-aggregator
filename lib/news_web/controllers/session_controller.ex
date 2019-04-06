@@ -7,12 +7,9 @@ defmodule NewsWeb.SessionController do
 
   def create(conn, %{"email" => email, "password" => password}) do
     with %User{} = user <- News.Users.get_and_auth_user(email, password) do
+
       resp = %{
-        data: %{
-          token: Phoenix.Token.sign(NewsWeb.Endpoint, "user_id", user.id),
-          user_id: user.id,
-          articles: user.articles |> Enum.map(fn article -> article.id end)
-          }
+        data: NewsWeb.UserView.render("new_user.json", %{user: user, token: Phoenix.Token.sign(NewsWeb.Endpoint, "user_id", user.id)})
       }
        conn
         |> put_resp_header("content-type", "applcication/json; charset=UTF-8")

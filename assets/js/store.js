@@ -81,6 +81,8 @@ function session(state = null, action){
         return action.data;
     case 'CLOSE_SESSION':
         return null;
+    case 'UPDATE_SESSION_ARTICLES':
+        return {...state, articles: action.data}
     default:
       return state;
   }
