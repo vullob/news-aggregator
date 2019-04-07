@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import useImage from 'use-image'
 
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
