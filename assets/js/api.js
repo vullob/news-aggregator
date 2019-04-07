@@ -86,7 +86,8 @@ class TheServer {
       this.send_patch(`/api/v1/users/${user.user_id}`,
          {id: user.user_id, user},
          (resp) => {
-            sessionStorage.setItem('user', resp.data.user_id)
+            sessionStorage.setItem('user', resp.data.id)
+            sessionStorage.setItem('articles', JSON.stringify(resp.data.articles))
             store.dispatch({
                type: 'UPDATE_SESSION_ARTICLES',
                data: resp.data.articles.map((a) => a.id)

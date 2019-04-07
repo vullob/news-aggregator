@@ -27,6 +27,7 @@ class Header extends React.Component {
     this.logout = this.logout.bind(this)
     this.changeSearch = this.changeSearch.bind(this)
     this.search = this.search.bind(this)
+    this.favorites = this.favorites.bind(this)
     if(sessionStorage.getItem("user") != null) {
       const articles = JSON.parse(sessionStorage.getItem("articles")) || []
       props.dispatch({type: "NEW_SESSION", data: {
@@ -34,9 +35,10 @@ class Header extends React.Component {
           token: sessionStorage.getItem("token"),
           articles: articles.map((a) => a.id)
       }})
+      //TODO: this adds stale data to the store - we should try and find a way around that
        props.dispatch({
             type: "ADD_MORE_ARTICLES",
-            date: articles.reduce((acc, elem) => {return {...acc, [elem.id]: elem}}, {})
+            data: articles.reduce((acc, elem) => {return {...acc, [elem.id]: elem}}, {})
           })
       }
     }
@@ -77,6 +79,7 @@ class Header extends React.Component {
 
   changeSearch(e){
     const { dispatch } = this.props
+    this.handleSelect("general")
     const updateQueryAction = {
       type: 'UPDATE_SEARCH_QUERY',
       data: e.target.value
@@ -87,7 +90,14 @@ class Header extends React.Component {
   search() {
     const { searchQuery, dispatch} = this.props
     channel.search(searchQuery)
+  }
 
+  favorites() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'SET_PAGE_TYPE',
+      data: 'favorites'
+    })
   }
 
 
@@ -116,7 +126,7 @@ class Header extends React.Component {
           {this.renderDropdowns(names)}
       </Dropdown.Menu>
       </Dropdown>
-      <Nav.Link onClick={() => this.handleSelect("general")} className="purple-text">Favorites</Nav.Link>
+    {session && <Nav.Link onClick={this.favorites} className="purple-text">Favorites</Nav.Link>}
     {session && <Nav.Link variant="outline" className="purple-text" onClick={this.logout}>Logout</Nav.Link>}
     {!session && <Nav.Link variant="outline" className="purple-text" onClick={this.showLoginModal} >Login</Nav.Link>}
     </Nav>

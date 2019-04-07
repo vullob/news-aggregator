@@ -75,6 +75,10 @@ defmodule News.Users do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+    |> case do
+        {:ok, user} -> {:ok, News.Users.get_user(user.id)}
+        error -> error |> IO.inspect
+        end
   end
 
   @doc """
