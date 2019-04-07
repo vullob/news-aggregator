@@ -95,7 +95,7 @@ defmodule News.Articles do
                         Map.delete("source") end)
     |> Enum.map(fn a -> create_article(a) end)
     |> remove_errors
-    |> Enum.map(fn x -> get_article(x))
+    |> Enum.map(fn x -> get_article(x) end)
     |> count_likes
   end
 
