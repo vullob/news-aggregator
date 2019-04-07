@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 
-class Header extends React.Component {
+class Footer extends React.Component {
   constructor(props){
     super(props)
     }
@@ -39,7 +39,4 @@ class Header extends React.Component {
 
 }
 
-export default connect((state) => {return {loginModal: state.loginModal,
-  session: state.session,
-  searchQuery: state.searchQuery,
-  selectedCategory: state.selectedCategory}})(Header)
+export default Footer

@@ -110,11 +110,12 @@ defmodule News.Users do
   end
 
   def add_articles_to_user(user, article_ids \\ []) do
+    userArticles = user.articles
     articles = article_ids |> Enum.map(fn x -> News.Articles.get_article(x) end)
     changeset = user |> User.changeset_add_articles(articles)
-
     case changeset |> Repo.update do
-      {:ok, res} -> broadcast(Enum.map(res.articles, fn x -> News.Articles.get_article(x.id)end)|> News.Articles.count_likes);{:ok, res}
+      {:ok, res} -> updatedArticles = userArticles ++ (res.articles -- userArticles);
+                    broadcast(Enum.map(updatedArticles, fn x -> News.Articles.get_article(x.id)end)|> News.Articles.count_likes);{:ok, res}
       error -> error
     end
   end
