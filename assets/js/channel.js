@@ -27,11 +27,11 @@ class TheChannel {
     window.channel.push("search", {query}).receive("ok", (resp) => {
       const { articles: {data}} = resp;
       const ids = data.map((article) => article.id)
+      this.addArticles(resp);
       store.dispatch({
         type: 'SET_SEARCH_ARTICLES',
         data: ids
       })
-      this.addArticles(resp);
       store.dispatch({
         type: 'SET_PAGE_TYPE',
         data: 'search'

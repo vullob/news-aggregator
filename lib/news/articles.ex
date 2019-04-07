@@ -49,7 +49,7 @@ defmodule News.Articles do
   def search(query) do
     Repo.all from a in Article,
       where: like(a.title, ^("%#{query}%")) or like(a.description, ^("%#{query}%")),
-      preload: [:source],
+      preload: [:source, :users],
       order_by: [desc: :publishedAt]
   end
 

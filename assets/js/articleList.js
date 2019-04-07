@@ -112,7 +112,7 @@ class ArticleList extends React.Component {
     const articlesInCategory = this.pickArticlesToRender()
     const currentFetchState = lastFetched[selectedCategory]
     return <React.Fragment>
-      {pageType == 'search' && <div class="row purple"><strong>Search Results</strong></div>}
+      {pageType == 'search' && <div className="row purple"><strong>Search Results</strong></div>}
       <InfiniteScroll
         {...{
           pageStart: 0,
