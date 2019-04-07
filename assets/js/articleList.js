@@ -35,9 +35,10 @@ const Liked = (props) => {
   }
 
 const Share = (props) => {
-    const { url } = props;
+  const { url } = props;
+  var clipboard = new Clipboard('.shareButton');
   //TODO: do something with the share button
-  return<Button {...{size: "sm", variant: "outline-light", className: "red-border no-padding"}}>
+  return<Button data-clipboardAction="copy" data-clipboard-text={url} value={url} {...{size: "sm", variant: "outline-light", className: "red-border no-padding shareButton", onClick: () => alert("URL Copied to Clipboard")}}>
           <Image {...{className: "purple-svg", src: share, height: 25, width: 25}}/>
         </Button>
   }
@@ -64,7 +65,7 @@ function Article(props) {
           <div className="row text-muted red-text">
             <div className="col-xs-8">{publishedAt && footerText}</div>
             {session != null && (session.articles.includes(id) ? <div className="col-2 pull-right"><Liked {...{session, id, likes}} /></div> : <div className="col-2 pull-right"><Like {...{session, id, likes}} /></div>)}
-            <div className="col-2 pull-right"><Share {...{url}}/></div>
+            <div className="col-2 pull-right"><Share {...{url, session, id}}/></div>
           </div>
         </Card.Footer>
       </Card>
