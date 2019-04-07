@@ -19,15 +19,17 @@ import liked from '../static/images/liked.svg'
 import share from '../static/images/share.svg'
 
 const Like = (props) => {
-  const { session, id } = props;
-  return <Button {...{size:"xs", variant:"outline-light", className:"red-border", onClick: () => api.update_user({...session, articles: session.articles.concat([id])}) }}>
+  const { session, id, likes } = props;
+  return <Button {...{size:"xs", variant:"outline-light", className:"red red-border", onClick: () => api.update_user({...session, articles: session.articles.concat([id])}) }}>
+          {likes}
           <Image {...{src: like, height: 25, width: 25}}/>
     </Button>
   }
 
 const Liked = (props) => {
-  const {session, id} = props;
-  return<Button {...{size: "xs", variant:"outline-light", className:"red-border", onClick: () => api.update_user({...session, articles: session.articles.filter((a) => a != id)})}}>
+  const {session, likes, id} = props;
+  return<Button {...{size: "xs", variant:"outline-light", className:"red red-border", onClick: () => api.update_user({...session, articles: session.articles.filter((a) => a != id)})}}>
+        {likes}
         <Image {...{src: liked, height: 25, width: 25}}/>
       </Button>
   }
@@ -35,13 +37,13 @@ const Liked = (props) => {
 const Share = (props) => {
     const { url } = props;
   //TODO: do something with the share button
-  return<Button {...{size: "xs", variant: "outline-light", className: "red-border"}}>
+  return<Button {...{size: "xs", variant: "outline-light", className: "red-border no-padding"}}>
           <Image {...{className: "purple-svg", src: share, height: 25, width: 25}}/>
         </Button>
   }
 
 function Article(props) {
-  const { article: {description, title, url, urlToImage, source, publishedAt}, currentDate, session, id} = props;
+  const { article: {description, title, url, urlToImage, source, publishedAt, likes}, currentDate, session, id} = props;
   const ms_per_hour = 1000 * 60 * 60;
   const currentDateGMT = new Date(currentDate.valueOf() + currentDate.getTimezoneOffset() + 60000)
   const hoursSincePublished = Math.floor((currentDateGMT - new Date(publishedAt || undefined))/ms_per_hour);
@@ -61,7 +63,7 @@ function Article(props) {
         <Card.Footer>
           <div className="row text-muted red-text">
             <div className="col-xs-8">{publishedAt && footerText}</div>
-            {session && session.articles.includes(id) ? <div className="col-2 pull-right"><Liked {...{session, id}} /></div> : <div className="col-2 pull-right"><Like {...{session, id}} /></div>}
+            {session != null && (session.articles.includes(id) ? <div className="col-2 pull-right"><Liked {...{session, id, likes}} /></div> : <div className="col-2 pull-right"><Like {...{session, id, likes}} /></div>)}
             <div className="col-2 pull-right"><Share {...{url}}/></div>
           </div>
         </Card.Footer>

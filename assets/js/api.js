@@ -45,7 +45,7 @@ class TheServer {
           })
           store.dispatch({
             type: "ADD_MORE_ARTICLES",
-            date: articles.reduce((acc, elem) => {return {...acc, [elem.id]: elem}}, {})
+            data: articles.reduce((acc, elem) => {return {...acc, [elem.id]: elem}}, {})
           })
           store.dispatch({
             type: "NEW_SESSION",

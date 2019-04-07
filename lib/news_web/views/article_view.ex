@@ -21,6 +21,7 @@ defmodule NewsWeb.ArticleView do
       publishedAt: article.publishedAt,
       content: article.content,
       article_category: article.article_category,
+      likes: article.likes,
       source: source}
   end
 end

@@ -71,6 +71,8 @@ class Header extends React.Component {
 
   logout(){
     const {dispatch} = this.props;
+    this.handleSelect("general")
+    sessionStorage.clear()
     const closeSessionAction  = {
       type: 'CLOSE_SESSION'
     }
@@ -79,7 +81,6 @@ class Header extends React.Component {
 
   changeSearch(e){
     const { dispatch } = this.props
-    this.handleSelect("general")
     const updateQueryAction = {
       type: 'UPDATE_SEARCH_QUERY',
       data: e.target.value

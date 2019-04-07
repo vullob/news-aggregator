@@ -10,12 +10,12 @@ defmodule NewsWeb.NewsChannelChannel do
   end
 
   def handle_in("more_articles", %{"publishedBefore" => publishedBefore, "category" => category}, socket) do
-      articles = NewsWeb.ArticleView.render("index.json", %{articles: News.Articles.fetch_more_from_category_after(category, publishedBefore)})
+      articles = NewsWeb.ArticleView.render("index.json", %{articles: News.Articles.fetch_more_from_category_after(category, publishedBefore) |> News.Articles.count_likes})
       {:reply, {:ok, %{articles: articles}}, socket}
   end
 
   def handle_in("search", %{"query" => query}, socket) do
-    articles = NewsWeb.ArticleView.render("index.json", %{articles: News.Articles.search(query)})
+    articles = NewsWeb.ArticleView.render("index.json", %{articles: News.Articles.search(query) |> News.Articles.count_likes})
     {:reply, {:ok, %{articles: articles}}, socket}
   end
 

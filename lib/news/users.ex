@@ -24,14 +24,14 @@ defmodule News.Users do
   def get_user_by_email(email) do
     Repo.one from u in User,
       where: u.email == ^email,
-      preload: [articles: :source]
+      preload: [articles: [:source, :users]]
   end
 
   def get_and_auth_user(email, password) do
     user = get_user_by_email(email)
     pwrd = Argon2.check_pass(user, password)
     case pwrd do
-      {:ok, user} -> user
+      {:ok, user} -> Map.put(user, :articles, News.Articles.count_likes(user.articles))
       _else -> nil
     end
   end
@@ -55,7 +55,7 @@ defmodule News.Users do
 
   def get_user(id) do
     Repo.one from u in User,
-        preload: [articles: :source],
+        preload: [articles: [:source, :users]],
         where: u.id == ^id
   end
   @doc """
@@ -101,7 +101,7 @@ defmodule News.Users do
       |> User.changeset(attrs)
       |> Repo.update()
       |> case do
-        {:ok, user} -> {:ok, News.Users.get_user(user.id)}
+        {:ok, user} -> ret = News.Users.get_user(user.id); {:ok, Map.put(ret, :articles, News.Articles.count_likes(ret.articles))}
         error -> error |> IO.inspect
         end
     else
@@ -114,10 +114,17 @@ defmodule News.Users do
     changeset = user |> User.changeset_add_articles(articles)
 
     case changeset |> Repo.update do
-      {:ok, res} -> {:ok, res}
+      {:ok, res} -> broadcast(Enum.map(res.articles, fn x -> News.Articles.get_article(x.id)end)|> News.Articles.count_likes);{:ok, res}
       error -> error
     end
   end
+
+  defp broadcast(data) do
+      data = %{articles: NewsWeb.ArticleView.render("index.json", %{articles: data})}
+      NewsWeb.Endpoint.broadcast!("news", "update_news",  data)
+  end
+
+
 
   @doc """
   Deletes a User.

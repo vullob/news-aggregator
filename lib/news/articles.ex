@@ -33,7 +33,7 @@ defmodule News.Articles do
       {:ok, datetime} = NaiveDateTime.from_iso8601(publishedBefore)
       Repo.all from a in Article,
         where: a.article_category == ^category and a.publishedAt < ^datetime,
-        preload: [:source],
+        preload: [:source, :users],
         limit: 200,
         order_by: [desc: :publishedAt]
   end
@@ -69,7 +69,7 @@ defmodule News.Articles do
   """
   def get_article!(id), do: Repo.get!(Article, id)
 
-  def get_article(id), do: Repo.get(Article, id) |> Repo.preload(:source)
+  def get_article(id), do: Repo.get(Article, id) |> Repo.preload(:source) |> Repo.preload(:users)
 
   @doc """
   Creates a article.
@@ -100,8 +100,12 @@ defmodule News.Articles do
   defp remove_errors(articles) do
     Enum.reduce(articles, [], fn x, acc -> case x do
                                                 {:ok, data} -> data = data |> Repo.preload(:source); [data | acc]
-                                                {:error, err} -> acc 
+                                                {:error, err} -> acc
                                                 end end)
+  end
+
+  def count_likes(articles) do
+    Enum.map(articles, fn x -> Map.put(x, :likes, length(x.users)) |> Map.delete(:users) end)
   end
 
 
