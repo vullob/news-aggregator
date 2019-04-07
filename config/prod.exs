@@ -11,7 +11,7 @@ use Mix.Config
 # before starting your production server.
 config :news, NewsWeb.Endpoint,
   http: [port: System.get_env("PORT")],
-  url: [host: "news.miniguavabundtcakes.com", port: 80],
+  url: [host: nil, port: 80],
   server: true,
   root: ".",
   cache_static_manifest: "priv/static/cache_manifest.json"
