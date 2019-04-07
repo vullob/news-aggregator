@@ -7,7 +7,7 @@ import api from './api'
 import Button from 'react-bootstrap/Button'
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import Card from 'react-bootstrap/Card'
-import CardColumns from 'react-bootstrap/CardColumns'
+import CardDeck from 'react-bootstrap/CardDeck'
 import Spinner from 'react-bootstrap/Spinner'
 import Image from 'react-bootstrap/Image'
 
@@ -20,7 +20,7 @@ import share from '../static/images/share.svg'
 
 const Like = (props) => {
   const { session, id, likes } = props;
-  return <Button {...{size:"xs", variant:"outline-light", className:"red red-border", onClick: () => api.update_user({...session, articles: session.articles.concat([id])}) }}>
+  return <Button {...{size:"sm", variant:"outline-light", className:"red red-border", onClick: () => api.update_user({...session, articles: session.articles.concat([id])}) }}>
           {likes}
           <Image {...{src: like, height: 25, width: 25}}/>
     </Button>
@@ -28,7 +28,7 @@ const Like = (props) => {
 
 const Liked = (props) => {
   const {session, likes, id} = props;
-  return<Button {...{size: "xs", variant:"outline-light", className:"red red-border", onClick: () => api.update_user({...session, articles: session.articles.filter((a) => a != id)})}}>
+  return<Button {...{size: "sm", variant:"outline-light", className:"red red-border", onClick: () => api.update_user({...session, articles: session.articles.filter((a) => a != id)})}}>
         {likes}
         <Image {...{src: liked, height: 25, width: 25}}/>
       </Button>
@@ -37,23 +37,23 @@ const Liked = (props) => {
 const Share = (props) => {
     const { url } = props;
   //TODO: do something with the share button
-  return<Button {...{size: "xs", variant: "outline-light", className: "red-border no-padding"}}>
+  return<Button {...{size: "sm", variant: "outline-light", className: "red-border no-padding"}}>
           <Image {...{className: "purple-svg", src: share, height: 25, width: 25}}/>
         </Button>
   }
 
 function Article(props) {
-  const { article: {description, title, url, urlToImage, source, publishedAt, likes}, currentDate, session, id} = props;
+  const { article: {description, title, url, urlToImage, source, publishedAt, likes}, currentDate, session, id, index} = props;
   const ms_per_hour = 1000 * 60 * 60;
-  const currentDateGMT = new Date(currentDate.valueOf() + currentDate.getTimezoneOffset() + 60000)
+  const currentDateGMT = new Date(currentDate.valueOf() + currentDate.getTimezoneOffset() * 60000)
   const hoursSincePublished = Math.floor((currentDateGMT - new Date(publishedAt || undefined))/ms_per_hour);
   const footerText = hoursSincePublished > 24 ?
     `Published ${Math.floor(hoursSincePublished/24)} days ago`
     :
     `published ${hoursSincePublished} hours ago`;
   return <React.Fragment>
-    <LazyLoad offset={450} height={210}>
-      <Card rel="noopener noreferrer" className="bg-light rounded no-border">
+    <LazyLoad offset={450}>
+      <Card rel="noopener noreferrer" className="bg-light rounded no-border article">
       <Card.Img {...{variant: 'top', src: urlToImage, className: "rounded"}} />
         <Card.Body as="a" href={url} target="_blank">
           <Card.Title className="red-text">{title}</Card.Title>
@@ -83,13 +83,13 @@ class ArticleList extends React.Component {
     const { articles, selectedCategory } = this.props;
     return Object.values(articles).filter((article) => {
           return article.article_category == selectedCategory;
-    }) //.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)) uncomment this for sorted articles
+    }) .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)) // uncomment this for sorted articles
        // Doesn't format great in CardColumns
   }
 
   renderArticles(articles, session) {
     const currentDate = new Date();
-    return articles.map((article) => <Article {...{session, article, currentDate, key: article.id, id: article.id}}/>)
+    return articles.map((article, index) => <Article {...{session, article, currentDate, key: index, index, id: article.id}}/>)
   }
 
   pickArticlesToRender() {
@@ -126,9 +126,9 @@ class ArticleList extends React.Component {
           useWindow: true
         }}
       >
-        <CardColumns>
+       <div class="row articleListContainer justify-content-center">
         {this.renderArticles(articlesInCategory, session)}
-        </CardColumns>
+        </div>
       </InfiniteScroll>
     </React.Fragment>
   }
