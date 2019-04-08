@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export MIX_ENV=prod
+source ./.env
 export PORT=4797
 
 echo "Stopping old copy of app, if any..."
