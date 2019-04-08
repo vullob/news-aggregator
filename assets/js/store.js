@@ -113,7 +113,6 @@ function loginModal(state = {show: false, type: 'login', errors: []}, action) {
 
 
 function root_reducer(state0, action) {
-  console.log('reducer', state0, action)
   const reducer = combineReducers({selectedCategory, articles, session, loginModal, lastFetched, searchQuery, searchArticles, pageType});
   const state1 = reducer(state0, action)
   return state1

@@ -38,7 +38,7 @@ const Share = (props) => {
   const { url } = props;
   var clipboard = new Clipboard('.shareButton');
   //TODO: do something with the share button
-  return<Button data-clipboardAction="copy" data-clipboard-text={url} value={url} {...{size: "sm", variant: "outline-light", className: "red-border no-padding shareButton", onClick: () => alert("URL Copied to Clipboard")}}>
+  return<Button data-clipboardaction="copy" data-clipboard-text={url} value={url} {...{size: "sm", variant: "outline-light", className: "red-border no-padding shareButton", onClick: () => alert("URL Copied to Clipboard")}}>
           <Image {...{className: "purple-svg", src: share, height: 25, width: 25}}/>
         </Button>
   }
@@ -84,7 +84,7 @@ class ArticleList extends React.Component {
     const { articles, selectedCategory } = this.props;
     return Object.values(articles).filter((article) => {
           return article.article_category == selectedCategory;
-    }) .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)) // uncomment this for sorted articles
+    }).sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)) // uncomment this for sorted articles
        // Doesn't format great in CardColumns
   }
 
@@ -101,7 +101,7 @@ class ArticleList extends React.Component {
       case 'search':
         return searchArticles.map((id) => articles[id])
       case 'favorites':
-        return  session.articles.map((id) => articles[id])
+        return  session.articles.map((id) => articles[id]).sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
     }
 
   }
@@ -127,7 +127,7 @@ class ArticleList extends React.Component {
           useWindow: true
         }}
       >
-       <div class="row articleListContainer justify-content-center">
+       <div className="row articleListContainer justify-content-center">
         {this.renderArticles(articlesInCategory, session)}
         </div>
       </InfiniteScroll>
