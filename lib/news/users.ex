@@ -94,8 +94,6 @@ defmodule News.Users do
 
   """
   def update_user(%User{} = user, attrs) do
-    user |> IO.inspect
-    attrs |> IO.inspect
     with {:ok, _} <- add_articles_to_user(user, attrs["articles"] || []) do
       user
       |> User.changeset(attrs)
