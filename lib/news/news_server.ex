@@ -16,7 +16,7 @@ defmodule News.NewsServer do
     hour = elem(elem(:calendar.local_time,1),0)
     cond do
       # only fetch news between 6 and 8 pm
-      hour > 20 || hour < 6 -> "NOT TIME TO FETCH YET" |> IO.inspect; schedule_timer(900000); {:noreply, Map.put(state, :time, rem((state[:time] || 0) + 900000, 86400000)}
+      hour > 20 || hour < 6 -> "NOT TIME TO FETCH YET" |> IO.inspect; schedule_timer(900000); {:noreply, Map.put(state, :time, rem((state[:time] || 0) + 900000, 86400000))}
       true ->
           # only need to update these once a day, or on start
           state = if rem(Map.get(state, :time) || 0, 86400000) == 0 do
