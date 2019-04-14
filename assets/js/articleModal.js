@@ -61,7 +61,7 @@ class ArticleModal extends React.Component {
    renderComments(comments) {
      const { session } = this.props;
      const currentDate = new Date()
-     return comments.map(comment => <Comment {...{...comment, deleteComment: () => this.deleteComment(comment.id), currentDate, canDelete: session.user_id == comment.user.id}}/>)
+     return comments.map(comment => <Comment {...{...comment, deleteComment: () => this.deleteComment(comment.id), currentDate, canDelete: (session && session.user_id) || undefined == comment.user.id}}/>)
    }
 
 

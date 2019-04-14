@@ -40,7 +40,8 @@ defmodule News.Comments do
   def fetch_comments_from_article(article_id) do
     Repo.all from c in Comment,
         where: c.article_id == ^article_id,
-        preload: [:user]
+        preload: [:user],
+        order_by: [desc: :publishedAt]
   end
 
   @doc """
