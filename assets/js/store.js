@@ -88,7 +88,7 @@ function session(state = null, action){
   }
 }
 
-function articleModal(state = {show: false, selectedArticleId: undefined}, action){
+function articleModal(state = {show: false, selectedArticleId: undefined, errors: []}, action){
   switch (action.type) {
     case 'SHOW_ARTICLE_MODAL':
       return {...state, show: true};
@@ -97,7 +97,11 @@ function articleModal(state = {show: false, selectedArticleId: undefined}, actio
     case 'UPDATE_SELECTED_ARTICLE_ID':
       return {...state, selectedArticleId: action.data}
     case 'RESET_ARTICLE_MODAL':
-      return {show: false, selectedArticleId: undefined}
+      return {show: false, selectedArticleId: undefined, errors:[]}
+    case 'SET_ARTICLE_MODAL_ERRORS':
+      return {...state, errors: action.data}
+    case 'CLEAR_ARTICLE_MODAL_ERRORS':
+      return {...state, errors:[]}
     default:
       return state;
   }

@@ -62,7 +62,7 @@ defmodule News.Comments do
   end
 
   def create_comment_now(attrs \\ %{}) do
-    attrs = Map.put(attrs, "publishedAt", DateTime.add(DateTime.utc_now, -14400, :second))
+    attrs = Map.put(attrs, "publishedAt", DateTime.utc_now)
     %Comment{}
     |> Comment.changeset(attrs)
     |> Repo.insert()

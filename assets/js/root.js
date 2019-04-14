@@ -4,6 +4,7 @@ import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import  channel  from './channel'
+import api from './api'
 
 import Header from './header'
 import ArticleList from './articleList'

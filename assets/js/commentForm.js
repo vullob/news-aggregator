@@ -22,7 +22,7 @@ class CommentForm extends React.Component {
   onSubmit() {
     const { articleId, userId } = this.props
     const {comment } = this.state;
-    api.create_comment(userId, articleId, comment)
+    api.create_comment(userId, articleId, comment, () => this.setState({comment: ""}))
   }
 
   render() {
@@ -33,7 +33,7 @@ class CommentForm extends React.Component {
         <Form.Label as="strong" className="green-text">New Comment</Form.Label>
         <Form.Control as="textarea" size="lg" type="text" value={comment} placeholder="Enter Comment Here..." className="purple" onChange={this.onCommentChange}/>
       </Form.Group>
-      <Button onClick={this.onSubmit} variant="outline" className="purple">Submit</Button>
+      <Button size="sm" height={25} onClick={this.onSubmit} variant="outline" className="purple">Submit</Button>
     </React.Fragment>
   }
 }

@@ -6,18 +6,43 @@ import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
 import Form from 'react-bootstrap/Form'
 import ListGroup from 'react-bootstrap/ListGroup'
+import Image from 'react-bootstrap/Image'
 
 import api from './api'
 
+import deleteImage from '../static/images/delete.svg'
+
 import CommentForm from './commentForm'
+const ms_per_hour = 1000 * 60 * 60;
+
+function Comment(props) {
+  const { user: {email}, text, publishedAt, canDelete, deleteComment, currentDate} = props;
+  const hoursSincePublished = Math.floor((currentDate - new Date(publishedAt || undefined))/ms_per_hour);
+  const dateText = hoursSincePublished > 24 ?  `${Math.floor(hoursSincePublished/24)} days ago` : `${hoursSincePublished} hours ago`;
+  return  <ListGroup.Item>
+      <div className="row">
+      <div className="col-8">
+      <strong className="red-text">{email}</strong>
+      <small className="text-muted green">{"\n" + dateText}</small>
+    </div>
+      <div className="col-4">
+        {canDelete &&
+            <Button variant="outline" className="purple" onClick={deleteComment}>
+              <Image src={deleteImage} width={25} height={25}/>
+            </Button>}
+      </div>
+    </div>
+      <p className="purple-text">{text}</p></ListGroup.Item>
+}
 
 class ArticleModal extends React.Component {
   constructor(props){
     super(props);
-    // store login info locally, since no one else needs to know these
     this.hideModal = this.hideModal.bind(this);
+    this.deleteComment = this.deleteComment.bind(this)
+    this.renderComments = this.renderComments.bind(this)
+    this.renderErrors = this.renderErrors.bind(this)
   }
-
 
   hideModal() {
     const { dispatch } = this.props;
@@ -28,9 +53,25 @@ class ArticleModal extends React.Component {
     dispatch(hideArticleModalAction)
   }
 
+  deleteComment(id) {
+    const { modal: {selectedArticleId}} = this.props;
+    api.delete_comment_from_article(id, selectedArticleId)
+  }
+
    renderComments(comments) {
-      return comments.map(comment => <ListGroup.Item><strong className="red-text">{comment.user.email}</strong><p className="purple-text">{comment.text}</p></ListGroup.Item>)
+     const { session } = this.props;
+     const currentDate = new Date()
+     return comments.map(comment => <Comment {...{...comment, deleteComment: () => this.deleteComment(comment.id), currentDate, canDelete: session.user_id == comment.user.id}}/>)
    }
+
+
+  renderErrors(){
+    const {modal: {errors} } = this.props;
+    return errors.map((error, i) => {
+        const errorField = error.component.split("_").map(f => f.charAt(0).toUpperCase() + f.slice(1)).join(" ")
+        return <Alert {...{key: i, variant: 'danger'}}><strong>{`${errorField}: `}</strong>{error.msg}</Alert>
+      })
+  }
    // TODO add form validation for comments
   render() {
     const { modal: {show, selectedArticleId}, articles, comments: {ids, commentData}, session} = this.props;
@@ -46,6 +87,9 @@ class ArticleModal extends React.Component {
             {this.renderComments(orderedComments)}
          </ListGroup>
         </Modal.Body>
+        <div className="row justify-content-center">
+           {this.renderErrors()}
+         </div>
         <Modal.Footer className="justify-content-center">
            {session && <CommentForm {...{userId: session.user_id, articleId: selectedArticleId}}/>}
         </Modal.Footer>

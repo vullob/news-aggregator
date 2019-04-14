@@ -83,13 +83,25 @@ class TheServer {
          })
    }
 
-   create_comment(user, article, text) {
-      console.log(`creating comment '${text}' for ${user} on ${article}`)
+   create_comment(user, article, text, success) {
+      store.dispatch({
+         type: 'CLEAR_ARTICLE_MODAL_ERRORS'
+      })
       this.send_post('/api/v1/comments',
          {comment: {user_id: user, article_id: article, text}},
-         (resp) => channel.fetch_comments_for_article(article),
-         (resp) => console.log(resp)
-      )
+         (resp) => {channel.fetch_comments_for_article(article); success()},
+         (resp) => {
+            console.log(resp)
+            const reqErrors = resp.responseJSON.errors
+            const articleModalErrors = Object.keys(reqErrors).map(key =>{
+               return { component: key, msg: reqErrors[key][0]}
+            })
+            const articleModalErrorAction = {
+                  type: 'SET_ARTICLE_MODAL_ERRORS',
+                  data: articleModalErrors
+            }
+            store.dispatch(articleModalErrorAction)
+         })
    }
 
 
@@ -118,6 +130,28 @@ class TheServer {
         error: error,
         headers: {"x-auth": sessionStorage.getItem('token')}
       });
+   }
+
+   send_delete(path, data, cb, error) {
+      if (!sessionStorage.getItem('token')) return;
+      $.ajax(path, {
+        method: "delete",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(data),
+        success: cb,
+        error: error,
+        headers: {"x-auth": sessionStorage.getItem('token')}
+      });
+   }
+
+   delete_comment_from_article(id, article_id) {
+      console.log(`deleting ${id} from ${article_id}`)
+      this.send_delete(`/api/v1/comments/${id}`,
+         {id},
+         (resp) => channel.fetch_comments_for_article(article_id),
+         (resp) =>console.log(resp))
+
    }
 
 }

@@ -14,7 +14,7 @@ defmodule News.Application do
       NewsWeb.Endpoint,
       # Starts a worker by calling: News.Worker.start_link(arg)
       # {News.Worker, arg},
-      News.NewsServer
+      #News.NewsServer
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
