@@ -13,8 +13,6 @@ defmodule News.Comments.Comment do
 
   @doc false
   def changeset(comment, attrs) do
-    # TODO: validate length of comments
-    # TODO: validate person calling is the same user
     comment
     |> cast(attrs, [:text, :publishedAt, :user_id, :article_id])
     |> foreign_key_constraint(:user_id, [message: "user not found"])

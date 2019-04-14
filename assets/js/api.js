@@ -32,8 +32,6 @@ class TheServer {
         {email, password},
         (resp) => {
            const {articles, token, id} = resp.data
-          //@TODO liked Articles are returned in this response
-          //they need to be parsed into the store
           sessionStorage.setItem('token', token)
           sessionStorage.setItem('user', id)
           sessionStorage.setItem('articles', JSON.stringify(articles))
@@ -91,7 +89,6 @@ class TheServer {
          {comment: {user_id: user, article_id: article, text}},
          (resp) => {channel.fetch_comments_for_article(article); success()},
          (resp) => {
-            console.log(resp)
             const reqErrors = resp.responseJSON.errors
             const articleModalErrors = Object.keys(reqErrors).map(key =>{
                return { component: key, msg: reqErrors[key][0]}
@@ -146,11 +143,10 @@ class TheServer {
    }
 
    delete_comment_from_article(id, article_id) {
-      console.log(`deleting ${id} from ${article_id}`)
       this.send_delete(`/api/v1/comments/${id}`,
          {id},
          (resp) => channel.fetch_comments_for_article(article_id),
-         (resp) =>console.log(resp))
+         (resp) => {})
 
    }
 

@@ -19,7 +19,7 @@ function Comment(props) {
   const { user: {email}, text, publishedAt, canDelete, deleteComment, currentDate} = props;
   const hoursSincePublished = Math.floor((currentDate - new Date(publishedAt || undefined))/ms_per_hour);
   const dateText = hoursSincePublished > 24 ?  `${Math.floor(hoursSincePublished/24)} days ago` : `${hoursSincePublished} hours ago`;
-  return  <ListGroup.Item>
+  return  <ListGroup.Item className="rounded purple mb-2">
       <div className="row">
       <div className="col-8">
       <strong className="red-text">{email}</strong>
@@ -72,7 +72,6 @@ class ArticleModal extends React.Component {
         return <Alert {...{key: i, variant: 'danger'}}><strong>{`${errorField}: `}</strong>{error.msg}</Alert>
       })
   }
-   // TODO add form validation for comments
   render() {
     const { modal: {show, selectedArticleId}, articles, comments: {ids, commentData}, session} = this.props;
     const selectedArticle = articles[selectedArticleId]
