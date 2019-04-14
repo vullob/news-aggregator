@@ -10,9 +10,12 @@ import Card from 'react-bootstrap/Card'
 import CardDeck from 'react-bootstrap/CardDeck'
 import Spinner from 'react-bootstrap/Spinner'
 import Image from 'react-bootstrap/Image'
+import ListGroup from 'react-bootstrap/ListGroup'
 
 import LazyLoad from 'react-lazyload';
 import InfiniteScroll from 'react-infinite-scroller';
+
+import ArticleModal from './articleModal'
 
 import like from '../static/images/like.svg'
 import liked from '../static/images/liked.svg'
@@ -44,7 +47,7 @@ const Share = (props) => {
   }
 
 function Article(props) {
-  const { article: {description, title, url, urlToImage, source, publishedAt, likes}, currentDate, session, id, index} = props;
+  const { article: {description, title, url, urlToImage, source, publishedAt, likes}, currentDate, session, id, index, onCommentsClick} = props;
   const ms_per_hour = 1000 * 60 * 60;
   const currentDateGMT = new Date(currentDate.valueOf() + currentDate.getTimezoneOffset() * 60000)
   const hoursSincePublished = Math.floor((currentDateGMT - new Date(publishedAt || undefined))/ms_per_hour);
@@ -61,6 +64,13 @@ function Article(props) {
           {source && <Card.Subtitle className="green-text">{source.name}</Card.Subtitle>}
           <Card.Text className="purple-text">{description}</Card.Text>
         </Card.Body>
+        <ListGroup variant="flush" >
+           <ListGroup.Item className="bg-light">
+             <div className="row justify-content-center">
+            <Button {...{className: "green", variant: 'outline-light', onClick: onCommentsClick}}>Comments</Button>
+          </div>
+          </ListGroup.Item>
+        </ListGroup>
         <Card.Footer>
           <div className="row text-muted red-text">
             <div className="col-xs-8">{publishedAt && footerText}</div>
@@ -78,6 +88,7 @@ class ArticleList extends React.Component {
     super(props)
     this.getArticlesOfCategory = this.getArticlesOfCategory.bind(this)
     this.pickArticlesToRender = this.pickArticlesToRender.bind(this)
+    this.viewComments = this.viewComments.bind(this)
   }
 
   getArticlesOfCategory() {
@@ -88,9 +99,23 @@ class ArticleList extends React.Component {
        // Doesn't format great in CardColumns
   }
 
+  viewComments(id) {
+    const { dispatch } = this.props;
+    channel.fetch_comments_for_article(id)
+    const setSelectedArticleIdAction = {
+        type: 'UPDATE_SELECTED_ARTICLE_ID',
+        data: id
+    }
+    const showModalAction = {
+        type: 'SHOW_ARTICLE_MODAL'
+    }
+    dispatch(setSelectedArticleIdAction);
+    dispatch(showModalAction)
+  }
+
   renderArticles(articles, session) {
     const currentDate = new Date();
-    return articles.map((article, index) => <Article {...{session, article, currentDate, key: index, index, id: article.id}}/>)
+    return articles.map((article, index) => <Article {...{session, article, currentDate, key: index, index, id: article.id, onCommentsClick: () => this.viewComments(article.id)}}/>)
   }
 
   pickArticlesToRender() {
@@ -106,14 +131,13 @@ class ArticleList extends React.Component {
 
   }
 
-
-
   render() {
-    const { articles, lastFetched, selectedCategory, searchArticles, pageType, session} = this.props;
+    const { articles, lastFetched, selectedCategory, searchArticles, pageType, session, articleModal: {show}} = this.props;
     const articlesInCategory = this.pickArticlesToRender()
     const currentFetchState = lastFetched[selectedCategory]
     return <React.Fragment>
       {pageType == 'search' && <div className="row purple"><strong>Search Results</strong></div>}
+      {show && <ArticleModal/>}
       <InfiniteScroll
         {...{
           pageStart: 0,
@@ -135,4 +159,4 @@ class ArticleList extends React.Component {
   }
 }
 
-export default connect((state) => {return {session: state.session, lastFetched: state.lastFetched,articles: state.articles, selectedCategory: state.selectedCategory, searchArticles: state.searchArticles, pageType: state.pageType}})(ArticleList)
+export default connect((state) => {return {session: state.session, lastFetched: state.lastFetched,articles: state.articles, selectedCategory: state.selectedCategory, searchArticles: state.searchArticles, pageType: state.pageType, articleModal: state.articleModal}})(ArticleList)

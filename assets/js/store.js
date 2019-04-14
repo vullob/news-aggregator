@@ -88,6 +88,32 @@ function session(state = null, action){
   }
 }
 
+function articleModal(state = {show: false, selectedArticleId: undefined}, action){
+  switch (action.type) {
+    case 'SHOW_ARTICLE_MODAL':
+      return {...state, show: true};
+    case 'HIDE_ARTICLE_MODAL':
+      return {...state, show: false};
+    case 'UPDATE_SELECTED_ARTICLE_ID':
+      return {...state, selectedArticleId: action.data}
+    case 'RESET_ARTICLE_MODAL':
+      return {show: false, selectedArticleId: undefined}
+    default:
+      return state;
+  }
+}
+
+function comments(state = {ids: [], commentData : {}}, action){
+  switch(action.type){
+    case 'SET_COMMENTS':
+      return action.data;
+    case 'RESET_COMMENTS':
+      return {ids: [], commentData: {}};
+    default:
+      return state;
+  }
+}
+
 function loginModal(state = {show: false, type: 'login', errors: []}, action) {
   switch (action.type) {
       case 'LOGIN_ERROR':
@@ -113,7 +139,7 @@ function loginModal(state = {show: false, type: 'login', errors: []}, action) {
 
 
 function root_reducer(state0, action) {
-  const reducer = combineReducers({selectedCategory, articles, session, loginModal, lastFetched, searchQuery, searchArticles, pageType});
+  const reducer = combineReducers({selectedCategory, articles, session, loginModal, lastFetched, searchQuery, searchArticles, pageType, comments, articleModal});
   const state1 = reducer(state0, action)
   return state1
 }

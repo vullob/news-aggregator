@@ -1,4 +1,5 @@
 import store from './store'
+import channel from './channel'
 
 class TheServer {
    fetch_path(path, callback) {
@@ -83,9 +84,10 @@ class TheServer {
    }
 
    create_comment(user, article, text) {
+      console.log(`creating comment '${text}' for ${user} on ${article}`)
       this.send_post('/api/v1/comments',
          {comment: {user_id: user, article_id: article, text}},
-         (resp) => console.log(resp),
+         (resp) => channel.fetch_comments_for_article(article),
          (resp) => console.log(resp)
       )
    }

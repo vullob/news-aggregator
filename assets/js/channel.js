@@ -41,8 +41,15 @@ class TheChannel {
   }
 
   fetch_comments_for_article(articleId) {
-    window.channel.push("comments", {article_id: articleId}).receive("ok", (resp) => console.log(resp))
-
+    window.channel.push("comments", {article_id: articleId}).receive("ok", (resp) => {
+      const ids = resp.comments.data.map(x => x.id)
+      const comments = resp.comments.data.reduce((acc, x) => {acc[x.id] = x; return acc}, {})
+      const setCommentsAction = {
+        type: 'SET_COMMENTS',
+        data: {ids, commentData: comments}
+      }
+      store.dispatch(setCommentsAction)
+    })
   }
 
   fetch_moar_articles(publishedBefore , category) {
