@@ -2,7 +2,7 @@
 
 export MIX_ENV=prod
 source ./.env
-export PORT=4797
+export PORT=4798
 
 echo "Stopping old copy of app, if any..."
 
