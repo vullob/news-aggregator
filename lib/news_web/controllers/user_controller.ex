@@ -26,12 +26,16 @@ defmodule NewsWeb.UserController do
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
+    cond do
+      Integer.to_string(conn.assigns[:current_user].id) != id -> send_resp(conn, 401, "stop deleting other user's comments")
+      true ->
     user = Users.get_user(id)
 
     with {:ok, %User{} = user} <- Users.update_user(user, user_params) do
       render(conn, "show.json", user: user)
     else
       error -> error |> IO.inspect
+      end
     end
   end
 

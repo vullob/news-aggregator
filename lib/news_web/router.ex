@@ -32,7 +32,6 @@ defmodule NewsWeb.Router do
   scope "/api/v1", NewsWeb do
     pipe_through :api_auth
     resources "/comments", CommentController, except: [:new, :edit]
-    resources "/articles", ArticleController, except: [:new, :edit]
-    resources "/users", UserController, except: [:new, :edit, :create]
+    resources "/users", UserController, except: [:new, :edit, :create, :delete]
   end
 end
