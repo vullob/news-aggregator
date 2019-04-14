@@ -6,6 +6,7 @@ defmodule News.Users.User do
     field :email, :string
     field :password_hash, :string
     many_to_many :articles, News.Articles.Article, join_through: "user_article", on_replace: :delete
+    has_many :comments, News.Comments.Comment
 
 
     field :password, :string, virtual: true

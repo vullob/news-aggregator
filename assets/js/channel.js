@@ -40,6 +40,11 @@ class TheChannel {
 
   }
 
+  fetch_comments_for_article(articleId) {
+    window.channel.push("comments", {article_id: articleId}).receive("ok", (resp) => console.log(resp))
+
+  }
+
   fetch_moar_articles(publishedBefore , category) {
     console.log(`Fetching more articles published before ${publishedBefore}, from ${category}`)
     window.channel.push("more_articles", {publishedBefore, category}).receive("ok", (resp) =>  {

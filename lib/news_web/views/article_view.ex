@@ -19,7 +19,6 @@ defmodule NewsWeb.ArticleView do
       url: article.url,
       urlToImage: article.urlToImage,
       publishedAt: article.publishedAt,
-      content: article.content,
       article_category: article.article_category,
       likes: article.likes,
       source: source}

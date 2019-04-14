@@ -16,6 +16,13 @@ defmodule NewsWeb.UserView do
       articles: render_many(user.articles, NewsWeb.ArticleView, "article.json") }
   end
 
+  def render("user_no_articles.json", %{user: user}) do
+     %{
+        id: user.id,
+        email: user.email
+      }
+  end
+
   def render("new_user.json", %{user: user, token: token}) do
     %{id: user.id,
       email: user.email,

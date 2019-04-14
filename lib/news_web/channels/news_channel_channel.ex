@@ -19,6 +19,11 @@ defmodule NewsWeb.NewsChannelChannel do
     {:reply, {:ok, %{articles: articles}}, socket}
   end
 
+  def handle_in("comments", %{"article_id" => article_id}, socket) do
+    comments = NewsWeb.CommentView.render("index.json", %{comments: News.Comments.fetch_comments_from_article(article_id)})
+    {:reply, {:ok, %{comments: comments}}, socket}
+  end
+
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
   def handle_in("ping", payload, socket) do

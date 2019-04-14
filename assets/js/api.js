@@ -82,6 +82,15 @@ class TheServer {
          })
    }
 
+   create_comment(user, article, text) {
+      this.send_post('/api/v1/comments',
+         {comment: {user_id: user, article_id: article, text}},
+         (resp) => console.log(resp),
+         (resp) => console.log(resp)
+      )
+   }
+
+
    update_user(user) {
       this.send_patch(`/api/v1/users/${user.user_id}`,
          {id: user.user_id, user},
