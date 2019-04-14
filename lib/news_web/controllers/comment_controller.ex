@@ -13,7 +13,7 @@ defmodule NewsWeb.CommentController do
 
   def create(conn, %{"comment" => comment_params}) do
     cond do
-      Integer.to_string(conn.assigns[:current_user].id) != (Map.get(comment_params, "user_id") || "") -> send_resp(conn, 401, "cannot create comments for other users")
+      conn.assigns[:current_user].id != (Map.get(comment_params, "user_id") || "") -> send_resp(conn, 401, "cannot create comments for other users")
       true ->
           with {:ok, %Comment{} = comment} <- Comments.create_comment_now(comment_params) |> IO.inspect do
             conn
